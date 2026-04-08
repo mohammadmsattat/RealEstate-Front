@@ -1,0 +1,130 @@
+{
+  "sidebar": {
+    "menu": "Menu",
+    "pages": "Pages",
+    "realEstate": "Real Estate",
+    "offers": "Offers",
+    "customers": "Customers",
+    "representative": "Representative",
+    "settings": "Settings",
+    "users": "Users",
+    "map": "Map",
+    "map control": "map control",
+    "categories": "Categories",
+    "zones": "Zones"
+  },
+
+  "offersPage": {
+    "title": "Offers Table",
+    "addOffer": "Add Offer",
+    "code": "Code",
+    "type": "Type",
+    "operation": "Operation",
+    "price": "Price",
+    "status": "Status",
+    "city": "City",
+    "area": "Area",
+    "map": "Map",
+    "viewOnMap": "View on Map",
+    "actionsTitle": "actions",
+    "deleteSelected": "Delete Selected",
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "pagination": {
+      "page": "Page"
+    },
+    "errors": {
+      "load": "Error loading offers"
+    }
+  },
+  "addOfferPage": {
+    "tabs": {
+      "basic": "Basic Info",
+      "location": "Location",
+      "details": "Property Details",
+      "financial": "Financial",
+      "media": "Media"
+    },
+    "propertyCode": "Property Code",
+    "operationType": "Operation Type",
+    "propertyType": "Property Type",
+    "titleField": "Title",
+    "description": "Description",
+    "city": "City",
+    "area": "Neighborhood",
+    "address": "Full Address",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "areaSize": "Total Space",
+    "builtArea": "Built Area",
+    "landArea": "Land Area",
+    "rooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "floorNumber": "Floor",
+    "totalFloors": "Total Floors",
+    "price": "Price",
+    "pricePerMeter": "Price per Meter",
+    "paymentMethod": "Payment Method",
+    "downPayment": "Down Payment %",
+    "installmentMonths": "Installment Months",
+    "listingExpiryDate": "Listing Expiry Date",
+    "lastModifiedDate": "Last Modified Date",
+    "closedDate": "Closed Date",
+    "images": {
+      "mainImage": "Main Image",
+      "images": "Images"
+    },
+    "documents": "Files / Documents",
+    "videoFiles": "Video Files",
+    "actions": {
+      "save": "Save Offer"
+    },
+    "select": {
+      "operation": {
+        "sale": "Sale",
+        "rent": "Rent"
+      },
+      "property": {
+        "house": "House",
+        "villa": "Villa",
+        "land": "Land"
+      },
+      "payment": {
+        "cash": "Cash",
+        "installment": "Installment"
+      }
+    }
+  },"offersControlPage": {
+    "loading": "Loading...",
+    "filters": "Filters",
+    "basicFilters": "Basic Filters",
+    "keywordSearch": "Keyword Search",
+    "keywordPlaceholder": "Code or title...",
+    "processType": "Process Type",
+    "estateType": "Estate Type",
+    "location": "Location",
+    "city": "City",
+    "cityPlaceholder": "City...",
+    "neighborhood": "Neighborhood",
+    "neighborhoodPlaceholder": "Neighborhood...",
+    "specifications": "Specifications",
+    "bedroomsMin": "Bedrooms (min)",
+    "bathroomsMin": "Bathrooms (min)",
+    "price": "Price",
+    "totalSpace": "Total Space (sqm)",
+    "min": "Min",
+    "max": "Max",
+    "offersList": "Offers List",
+    "offersFound": "offers found",
+    "applyFilters": "Apply Filters",
+    "code": "Code",
+    "type": "Type",
+    "operation": "Operation",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms"
+  }
+ 
+}

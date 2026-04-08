@@ -1,0 +1,132 @@
+{
+  "sidebar": {
+    "menu": "القائمة",
+    "pages": "الصفحات",
+    "realEstate": "العقارات",
+    "offers": "العروض",
+    "customers": "العملاء",
+    "representative": "المندوب",
+    "settings": "الإعدادات",
+    "users": "المستخدمون",
+    "map": "الخريطة",
+    "map control": "تحكم الخريطة",
+    "categories": "الفئات",
+    "zones": "المناطق"
+  },
+
+  "offersPage": {
+    "title": "جدول العروض",
+    "addOffer": "إضافة عرض",
+    "code": "الكود",
+    "type": "النوع",
+    "operation": "نوع العملية",
+    "price": "السعر",
+    "status": "الحالة",
+    "city": "المدينة",
+    "area": "المنطقة",
+    "map": "الخريطة",
+    "viewOnMap": "عرض على الخريطة",
+    "deleteSelected": "حذف المحدد",
+
+    "actionsTitle": "العمليات",
+
+    "actions": {
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "pagination": {
+      "page": "صفحة"
+    },
+    "errors": {
+      "load": "فشل تحميل العروض"
+    }
+  }
+, "addOfferPage": {
+    "tabs": {
+      "basic": "المعلومات الأساسية",
+      "location": "الموقع",
+      "details": "تفاصيل العقار",
+      "financial": "المالية",
+      "media": "الوسائط"
+    },
+    "propertyCode": "كود العقار",
+    "operationType": "نوع العملية",
+    "propertyType": "نوع العقار",
+    "titleField": "العنوان",
+    "description": "الوصف",
+    "city": "المدينة",
+    "area": "الحي",
+    "address": "العنوان الكامل",
+    "latitude": "خط العرض",
+    "longitude": "خط الطول",
+    "areaSize": "المساحة الكلية",
+    "builtArea": "المساحة المبنية",
+    "landArea": "مساحة الأرض",
+    "rooms": "عدد الغرف",
+    "bathrooms": "الحمامات",
+    "floorNumber": "رقم الطابق",
+    "totalFloors": "إجمالي الطوابق",
+    "price": "السعر",
+    "pricePerMeter": "السعر لكل متر",
+    "paymentMethod": "طريقة الدفع",
+    "downPayment": "الدفع المقدم %",
+    "installmentMonths": "أشهر التقسيط",
+    "listingExpiryDate": "تاريخ انتهاء العرض",
+    "lastModifiedDate": "آخر تعديل",
+    "closedDate": "تاريخ الإغلاق",
+    "images": {
+      "mainImage": "الصورة الرئيسية",
+      "images": "الصور"
+    },
+    "documents": "ملفات / مستندات",
+    "videoFiles": "ملفات الفيديو",
+    "actions": {
+      "save": "حفظ العرض"
+    },
+    "select": {
+      "operation": {
+        "sale": "بيع",
+        "rent": "إيجار"
+      },
+      "property": {
+        "house": "منزل",
+        "villa": "فيلا",
+        "land": "أرض"
+      },
+      "payment": {
+        "cash": "كاش",
+        "installment": "تقسيط"
+      }
+    }
+  }, "offersControlPage": {
+    "loading": "جارٍ التحميل...",
+    "filters": "الفلاتر",
+    "basicFilters": "الفلاتر الأساسية",
+    "keywordSearch": "بحث بالكلمة المفتاحية",
+    "keywordPlaceholder": "كود أو عنوان...",
+    "processType": "نوع العملية",
+    "estateType": "نوع العقار",
+    "location": "الموقع",
+    "city": "المدينة",
+    "cityPlaceholder": "المدينة...",
+    "neighborhood": "الحي",
+    "neighborhoodPlaceholder": "الحي...",
+    "specifications": "المواصفات",
+    "bedroomsMin": "عدد غرف النوم (الحد الأدنى)",
+    "bathroomsMin": "عدد الحمامات (الحد الأدنى)",
+    "price": "السعر",
+    "totalSpace": "المساحة الكلية (م²)",
+    "min": "الحد الأدنى",
+    "max": "الحد الأقصى",
+    "offersList": "قائمة العروض",
+    "offersFound": "عروض تم العثور عليها",
+    "applyFilters": "تطبيق الفلاتر",
+    "code": "الكود",
+    "type": "نوع العقار",
+    "operation": "العملية",
+    "bedrooms": "عدد الغرف",
+    "bathrooms": "الحمامات"
+  }
+  
+}
