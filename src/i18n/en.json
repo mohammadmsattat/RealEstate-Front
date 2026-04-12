@@ -1,4 +1,5 @@
 {
+  "Select Option":"Select Option",
   "sidebar": {
     "menu": "Menu",
     "pages": "Pages",
@@ -104,7 +105,9 @@
     "keywordSearch": "Keyword Search",
     "keywordPlaceholder": "Code or title...",
     "processType": "Process Type",
+    "select_processType": "select Process Type",
     "estateType": "Estate Type",
+    "select_estateType": "select Estate Type",
     "location": "Location",
     "city": "City",
     "cityPlaceholder": "City...",
@@ -120,6 +123,7 @@
     "offersList": "Offers List",
     "offersFound": "offers found",
     "applyFilters": "Apply Filters",
+    "showOnMap": "Show ON Map",
     "code": "Code",
     "type": "Type",
     "operation": "Operation",

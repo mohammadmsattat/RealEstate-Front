@@ -3,7 +3,7 @@
 export const baseURL = "http://localhost:8001";
 
 // Auth
-export const AuthEndPoint = "/api/users";
+export const AuthEndPoint = "/api/auth";
 
 // Offers
 // export const OffersEndPoint = "/api/offers";

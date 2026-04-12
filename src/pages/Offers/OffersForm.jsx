@@ -73,7 +73,7 @@ export default function OfferForm({
   return (
     <>
       {/* Header with Save Button */}
-      <div className="flex justify-between items-center mb-6 pb-4 border-b">
+      {/* <div className="flex justify-between items-center mb-6 pb-4 border-b">
         <h2 className="text-xl font-semibold text-gray-800">
           {t("addOfferPage.title") || "Add New Offer"}
         </h2>
@@ -83,7 +83,7 @@ export default function OfferForm({
         >
           {t("addOfferPage.actions.save") || "Save Offer"}
         </button>
-      </div>
+      </div> */}
 
       <TabGroup>
         <TabList className="flex flex-wrap gap-4 border-b pb-3">
@@ -154,7 +154,7 @@ export default function OfferForm({
           </TabPanel>
 
           {/* LOCATION */}
-         
+
           <TabPanel>
             <div className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
@@ -287,13 +287,6 @@ export default function OfferForm({
                 label={t("addOfferPage.listingExpiryDate")}
                 value={formData.listingExpiryDate}
                 onChange={handleChange("listingExpiryDate")}
-              />
-              <Textinput
-                type="date"
-                label={t("addOfferPage.lastModifiedDate")}
-                value={formData.lastModifiedDate}
-                onChange={handleChange("lastModifiedDate")}
-                disabled
               />
               <Textinput
                 type="date"

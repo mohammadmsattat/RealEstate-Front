@@ -8,6 +8,7 @@ const OfferDetailsPage = () => {
     const {t}= useTranslation()
   const { id } = useParams();
   const { data, isLoading } = useGetOfferByIdQuery(id);
+console.log(data);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 

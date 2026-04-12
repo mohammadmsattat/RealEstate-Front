@@ -1,64 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Modal from "@/components/ui/Modal";
 import Textinput from "@/components/ui/Textinput";
 import Select from "@/components/ui/Select";
-import Button from "@/components/ui/Button";
 import { useGetOffersQuery } from "@/store/api/Offers/OffersApi";
 import { socketService } from "@/socketService";
-import { useTranslation } from "react-i18next";
+
+const normalizeFilters = (f) => ({
+  keyword: f.keyword || undefined,
+  processType: f.processType || undefined,
+  estateType: f.estateType || undefined,
+  city: f.city || undefined,
+  neighborhood: f.neighborhood || undefined,
+  bedrooms: f.bedrooms ? Number(f.bedrooms) : undefined,
+  bathrooms: f.bathrooms ? Number(f.bathrooms) : undefined,
+  minPrice: f.minPrice ? Number(f.minPrice) : undefined,
+  maxPrice: f.maxPrice ? Number(f.maxPrice) : undefined,
+  minSpace: f.minSpace ? Number(f.minSpace) : undefined,
+  maxSpace: f.maxSpace ? Number(f.maxSpace) : undefined,
+});
+
+const initialFilters = {
+  keyword: "",
+  processType: "",
+  estateType: "",
+  city: "",
+  neighborhood: "",
+  bedrooms: "",
+  bathrooms: "",
+  minPrice: "",
+  maxPrice: "",
+  minSpace: "",
+  maxSpace: "",
+};
 
 const OffersControlPage = () => {
-  const { t } = useTranslation();
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
-  const [filters, setFilters] = useState({
-    search: "",
-    processType: "",
-    estateType: "",
-    city: "",
-    neighborhood: "",
-    bedrooms: "",
-    bathrooms: "",
-    minPrice: "",
-    maxPrice: "",
-    minSpace: "",
-    maxSpace: "",
-    isFeatured: false,
-    isUrgent: false,
-  });
-
-  // الحالة المعتمدة لإرسال الفلاتر
+  const [filters, setFilters] = useState(initialFilters);
   const [appliedFilters, setAppliedFilters] = useState({});
 
-  const normalizedFilters = {
-    keyword: appliedFilters.search || undefined,
-    processType: appliedFilters.processType || undefined,
-    estateType: appliedFilters.estateType || undefined,
-    city: appliedFilters.city || undefined,
-    neighborhood: appliedFilters.neighborhood || undefined,
-    bedrooms: appliedFilters.bedrooms
-      ? Number(appliedFilters.bedrooms)
-      : undefined,
-    bathrooms: appliedFilters.bathrooms
-      ? Number(appliedFilters.bathrooms)
-      : undefined,
-    minPrice: appliedFilters.minPrice
-      ? Number(appliedFilters.minPrice)
-      : undefined,
-    maxPrice: appliedFilters.maxPrice
-      ? Number(appliedFilters.maxPrice)
-      : undefined,
-    minSpace: appliedFilters.minSpace
-      ? Number(appliedFilters.minSpace)
-      : undefined,
-    maxSpace: appliedFilters.maxSpace
-      ? Number(appliedFilters.maxSpace)
-      : undefined,
-    isFeatured: appliedFilters.isFeatured ? true : undefined,
-    isUrgent: appliedFilters.isUrgent ? true : undefined,
-  };
+  const normalizedFilters = normalizeFilters(appliedFilters);
 
-  const { data, isLoading, refetch } = useGetOffersQuery(normalizedFilters, {
+  const { data } = useGetOffersQuery(normalizedFilters, {
     skip: !Object.keys(appliedFilters).length,
+    refetchOnMountOrArgChange: true,
   });
 
   useEffect(() => {
@@ -69,131 +56,180 @@ const OffersControlPage = () => {
     setFilters((prev) => ({ ...prev, [field]: value }));
   };
 
-  // زر جلب البيانات (الفلاتر)
   const applySearchFilters = () => {
     setAppliedFilters(filters);
-    // setTimeout(() => {
-    //   refetch();
-    // }, 0);
+    setIsFilterModalOpen(false);
   };
 
-  // زر الخريطة (Socket)
+  const resetFilters = () => {
+    setFilters(initialFilters);
+    setAppliedFilters({});
+  };
+
+  const removeFilter = (key) => {
+    setAppliedFilters((prev) => {
+      const updated = { ...prev };
+      delete updated[key];
+      return updated;
+    });
+  };
+
   const applyFilters = () => {
-    socketService.emitUpdateState({ filters });
+    if (!Object.keys(appliedFilters).length) return;
+
+    socketService.emitUpdateState({
+      filters: normalizedFilters,
+    });
   };
 
-  if (isLoading) return <div>{t("offersControlPage.loading")}</div>;
+  const activeFilters = Object.entries(appliedFilters).filter(
+    ([_, v]) => v !== "" && v != null,
+  );
 
   return (
-    <div className="flex gap-6 h-[90vh]">
-      {/* Sidebar Filters */}
-      <div className="w-80 flex-shrink-0 overflow-y-auto border-r border-gray-200 p-4 pt-0 space-y-4">
-        <Card title={t("offersControlPage.filters")}>
-          <div className="space-y-3">
-            <details open className="border-b pb-2">
-              <summary className="cursor-pointer font-medium text-gray-700">
-                {t("offersControlPage.basicFilters")}
-              </summary>
-              <div className="mt-2 space-y-2">
-                <Textinput
-                  label={t("offersControlPage.keywordSearch")}
-                  value={filters.search}
-                  onChange={(e) => handleChange("search", e.target.value)}
-                />
-                <Select
-                  label={t("offersControlPage.processType")}
-                  options={[
-                    "",
-                    "for_sale",
-                    "for_rent",
-                    "for_lease",
-                    "sold",
-                    "rented",
-                  ]}
-                  value={filters.processType}
-                  onChange={(value) => handleChange("processType", value)}
-                />
-                <Select
-                  label={t("offersControlPage.estateType")}
-                  options={[
-                    "",
-                    "apartment",
-                    "villa",
-                    "house",
-                    "townhouse",
-                    "duplex",
-                    "penthouse",
-                    "studio",
-                    "commercial",
-                    "land",
-                    "building",
-                    "chalet",
-                    "farm",
-                    "warehouse",
-                  ]}
-                  value={filters.estateType}
-                  onChange={(value) => handleChange("estateType", value)}
-                />
-              </div>
-            </details>
-          </div>
-
-          {/* زر الفلترة (جلب البيانات) */}
-          <Button
-            text={t("offersControlPage.applyFilters")}
-            className="btn-primary w-full mt-4"
-            onClick={applySearchFilters}
-          />
-        </Card>
-      </div>
-
-      {/* Offers Table */}
-      <div className="flex-1 overflow-x-auto">
+    <div className="flex md:space-x-5 relative min-h-screen">
+      {/* ================= MAIN ================= */}
+      <div className="flex-1">
         <Card
-          title={t("offersControlPage.offersList")}
-          subtitle={`${data?.data?.length || 0} ${t(
-            "offersControlPage.offersFound",
-          )}`}
+          title="Offers"
+          subtitle={`Results: ${data?.data?.length || 0}`}
           headerSlot={
-            <Button
-              text={t("offersControlPage.applyFilters")}
-              className="btn-primary w-full"
-              onClick={applyFilters}
-            />
+            <div className="flex gap-2">
+              <Button
+                text={`Filters (${activeFilters.length})`}
+                className="btn-dark"
+                onClick={() => setIsFilterModalOpen(true)}
+              />
+
+              <Button
+                text="Apply on Map"
+                className={`btn-dark ${
+                  activeFilters.length ? "" : "opacity-50 cursor-not-allowed"
+                }`}
+                disabled={!activeFilters.length}
+                onClick={applyFilters}
+              />
+            </div>
           }
         >
-          <table className="min-w-full divide-y divide-slate-100">
+          <table className="min-w-full divide-y">
             <thead>
               <tr>
-                <th className="table-th">{t("offersControlPage.code")}</th>
-                <th className="table-th">{t("offersControlPage.type")}</th>
-                <th className="table-th">{t("offersControlPage.operation")}</th>
-                <th className="table-th">{t("offersControlPage.price")}</th>
-                <th className="table-th">{t("offersControlPage.city")}</th>
-                <th className="table-th">{t("offersControlPage.bedrooms")}</th>
-                <th className="table-th">{t("offersControlPage.bathrooms")}</th>
-                <th className="table-th">
-                  {t("offersControlPage.totalSpace")}
-                </th>
+                <th className="table-th">Code</th>
+                <th className="table-th">Type</th>
+                <th className="table-th">Price</th>
+                <th className="table-th">City</th>
+                <th className="table-th">Bedrooms</th>
+                <th className="table-th">Space</th>
               </tr>
             </thead>
+
             <tbody>
-              {data?.data?.map((offer) => (
-                <tr key={offer._id} className="hover:bg-slate-50">
-                  <td className="table-td">{offer.code}</td>
-                  <td className="table-td">{offer.estateType}</td>
-                  <td className="table-td">{offer.processType}</td>
-                  <td className="table-td">{offer.price}</td>
-                  <td className="table-td">{offer.city}</td>
-                  <td className="table-td">{offer.bedrooms}</td>
-                  <td className="table-td">{offer.bathrooms}</td>
-                  <td className="table-td">{offer.totalSpace}</td>
+              {data?.data?.length > 0 ? (
+                data.data.map((offer, index) => (
+                  <tr
+                    key={offer._id}
+                    className={`transition hover:bg-slate-50 ${
+                      index % 2 === 0 ? "bg-white" : "bg-slate-50"
+                    }`}
+                  >
+                    <td className="table-td">{offer.code}</td>
+                    <td className="table-td">{offer.estateType}</td>
+                    <td className="table-td">{offer.price}</td>
+                    <td className="table-td">{offer.city}</td>
+                    <td className="table-td">{offer.bedrooms}</td>
+                    <td className="table-td">{offer.totalSpace}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-6 text-slate-500">
+                    No data available
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </Card>
       </div>
+
+      {/* ================= MODAL ================= */}
+      <Modal
+        title="Filters"
+        activeModal={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+      >
+        <div className="space-y-3">
+          <Textinput
+            label="Keyword"
+            value={filters.keyword}
+            onChange={(e) => handleChange("keyword", e.target.value)}
+          />
+
+          <Select
+            label="Process Type"
+            options={[
+              { label: "Sale", value: "sale" },
+              { label: "Rent", value: "rent" },
+            ]}
+            value={filters.processType}
+            onChange={(e) => handleChange("processType", e.target.value)}
+          />
+
+          <Select
+            label="Estate Type"
+            options={[
+              { label: "House", value: "house" },
+              { label: "Villa", value: "villa" },
+              { label: "Land", value: "land" },
+            ]}
+            value={filters.estateType}
+            onChange={(e) => handleChange("estateType", e.target.value)}
+          />
+
+          <Textinput
+            label="City"
+            value={filters.city}
+            onChange={(e) => handleChange("city", e.target.value)}
+          />
+
+          <Textinput
+            label="Bedrooms"
+            type="number"
+            value={filters.bedrooms}
+            onChange={(e) => handleChange("bedrooms", e.target.value)}
+          />
+
+          <div className="flex gap-2">
+            <Textinput
+              placeholder="Min Price"
+              type="number"
+              value={filters.minPrice}
+              onChange={(e) => handleChange("minPrice", e.target.value)}
+            />
+            <Textinput
+              placeholder="Max Price"
+              type="number"
+              value={filters.maxPrice}
+              onChange={(e) => handleChange("maxPrice", e.target.value)}
+            />
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <Button
+              text="Reset"
+              className="btn-secondary w-full"
+              onClick={resetFilters}
+            />
+
+            <Button
+              text="Apply Filters"
+              className="btn-dark w-full"
+              onClick={applySearchFilters}
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -2,8 +2,11 @@ import { useState } from "react";
 import { useCreateOfferMutation } from "@/store/api/Offers/OffersApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export function useAddOffer() {
+    const { t } = useTranslation();
+  
   const navigation = useNavigate();
   const [isMapOpen, setIsMapOpen] = useState(false);
   const openMapModal = () => setIsMapOpen(true);
@@ -212,6 +215,7 @@ export function useAddOffer() {
   };
 
   return {
+    t,
     formData,
     features,
     files,

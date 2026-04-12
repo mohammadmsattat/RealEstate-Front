@@ -1,4 +1,6 @@
 {
+  "Select Option": "",
+
   "sidebar": {
     "menu": "القائمة",
     "pages": "الصفحات",
@@ -41,8 +43,8 @@
     "errors": {
       "load": "فشل تحميل العروض"
     }
-  }
-, "addOfferPage": {
+  },
+  "addOfferPage": {
     "tabs": {
       "basic": "المعلومات الأساسية",
       "location": "الموقع",
@@ -99,14 +101,17 @@
         "installment": "تقسيط"
       }
     }
-  }, "offersControlPage": {
+  },
+  "offersControlPage": {
     "loading": "جارٍ التحميل...",
     "filters": "الفلاتر",
     "basicFilters": "الفلاتر الأساسية",
     "keywordSearch": "بحث بالكلمة المفتاحية",
     "keywordPlaceholder": "كود أو عنوان...",
     "processType": "نوع العملية",
+    "select_processType": "اختر نوع العملية ",
     "estateType": "نوع العقار",
+    "select_estateType": "اختر نوع العقار",
     "location": "الموقع",
     "city": "المدينة",
     "cityPlaceholder": "المدينة...",
@@ -122,11 +127,11 @@
     "offersList": "قائمة العروض",
     "offersFound": "عروض تم العثور عليها",
     "applyFilters": "تطبيق الفلاتر",
+    "showOnMap": "أظهر على الخريطة",
     "code": "الكود",
     "type": "نوع العقار",
     "operation": "العملية",
     "bedrooms": "عدد الغرف",
     "bathrooms": "الحمامات"
   }
-  
 }

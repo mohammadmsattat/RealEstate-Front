@@ -1,73 +1,55 @@
-import React, { useState } from "react";
+import React from "react";
 import Textinput from "@/components/ui/Textinput";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import Checkbox from "@/components/ui/Checkbox";
 import Button from "@/components/ui/Button";
 import { Link } from "react-router-dom";
 
-const schema = yup
-  .object({
-    username: yup.string().required("Username is Required"),
-    password: yup.string().required("Password is Required"),
-  })
-  .required();
-
-const LoginForm = ({ onSubmit, loading }) => {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-    mode: "all",
-  });
-
-  const [checked, setChecked] = useState(false);
-
+const LoginForm = ({ form, onChange, onSubmit, loading }) => {
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="space-y-4">
+
+      {/* Username */}
       <Textinput
-        name="username"
         label="Username"
         type="text"
-        register={register}
-        error={errors.username}
+        value={form.username}
+        onChange={(e) => onChange("username", e.target.value)}
         className="h-[48px]"
       />
 
+      {/* Password */}
       <Textinput
-        name="password"
         label="Password"
         type="password"
-        register={register}
-        error={errors.password}
+        value={form.password}
+        onChange={(e) => onChange("password", e.target.value)}
         className="h-[48px]"
       />
 
+      {/* Remember */}
       <div className="flex justify-between">
         <Checkbox
-          value={checked}
-          onChange={() => setChecked(!checked)}
+          value={form.remember}
+          onChange={() => onChange("remember", !form.remember)}
           label="Keep me signed in"
         />
 
         <Link
           to="/forgot-password"
-          className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium"
+          className="text-sm text-slate-800 dark:text-slate-400"
         >
           Forgot Password?
         </Link>
       </div>
 
+      {/* Submit */}
       <Button
-        type="submit"
         text="Sign in"
-        className="btn btn-dark block w-full text-center"
+        className="btn btn-dark w-full"
         isLoading={loading}
+        onClick={onSubmit}
       />
-    </form>
+    </div>
   );
 };
 

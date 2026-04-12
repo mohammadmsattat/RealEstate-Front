@@ -38,7 +38,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     // Clear user data from local storage
-    localStorage.removeItem("user");
+    // localStorage.removeItem("user");
     dispatch(logOut());
   };
 
