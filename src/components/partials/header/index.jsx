@@ -17,8 +17,10 @@ import useRtl from "@/hooks/useRtl";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import MonoChrome from "./Tools/MonoChrome";
 import HeaderCart from "./Tools/cart";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ className = "custom-class" }) => {
+  const navigate =useNavigate();
   const [collapsed, setMenuCollapsed] = useSidebar();
   const { width, breakpoints } = useWidth();
   const [navbarType] = useNavbarType();
@@ -44,6 +46,13 @@ const Header = ({ className = "custom-class" }) => {
 
   const handleOpenMobileMenu = () => {
     setMobileMenu(!mobileMenu);
+  };
+
+  const handleLogout = () => {
+    // Clear user data from local storage
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   const borderSwicthClass = () => {
@@ -125,6 +134,13 @@ const Header = ({ className = "custom-class" }) => {
             {/* {width >= breakpoints.md && <Message />} */}
             {width >= breakpoints.md && <Notification />}
             {/* {width >= breakpoints.md && <Profile />} */}
+            <div
+              onClick={handleLogout}
+              className="flex items-center gap-2 cursor-pointer text-red-500 hover:text-red-600 transition"
+            >
+              <Icon width="20" icon="heroicons-outline:logout" />
+              <span className="text-sm">Logout</span>
+            </div>
             {width <= breakpoints.md && (
               <div
                 className="cursor-pointer text-slate-900 dark:text-white text-2xl"
