@@ -10,6 +10,7 @@ import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import "leaflet-geosearch/dist/geosearch.css";
 import { useTranslation } from "react-i18next";
+import MapModal from "./mapModal";
 
 function SearchControl() {
   const map = useMap();
@@ -63,11 +64,27 @@ export default function OfferForm({
   setFiles,
   setLatLng,
   handleSubmit,
+  isMapOpen,
+  onOpenMap,
+  onCloseMap,
 }) {
   const { t } = useTranslation();
 
   return (
     <>
+      {/* Header with Save Button */}
+      <div className="flex justify-between items-center mb-6 pb-4 border-b">
+        <h2 className="text-xl font-semibold text-gray-800">
+          {t("addOfferPage.title") || "Add New Offer"}
+        </h2>
+        <button
+          onClick={handleSubmit}
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors"
+        >
+          {t("addOfferPage.actions.save") || "Save Offer"}
+        </button>
+      </div>
+
       <TabGroup>
         <TabList className="flex flex-wrap gap-4 border-b pb-3">
           {tabs.map((tItem, i) => (
@@ -77,7 +94,8 @@ export default function OfferForm({
                   className={`flex items-center gap-2 px-3 py-2 rounded transition
                     ${selected ? "bg-blue-100 text-blue-600" : "text-gray-500"}`}
                 >
-                  <Icon icon={tItem.icon} /> {t(`addOfferPage.tabs.${tItem.key}`)}
+                  <Icon icon={tItem.icon} />{" "}
+                  {t(`addOfferPage.tabs.${tItem.key}`)}
                 </button>
               )}
             </Tab>
@@ -136,6 +154,7 @@ export default function OfferForm({
           </TabPanel>
 
           {/* LOCATION */}
+         
           <TabPanel>
             <div className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
@@ -160,28 +179,34 @@ export default function OfferForm({
               <div className="grid md:grid-cols-2 gap-4">
                 <Textinput
                   label={t("addOfferPage.latitude")}
-                  value={formData.location.lat}
+                  value={formData.location?.lat || ""}
                   disabled
                 />
                 <Textinput
                   label={t("addOfferPage.longitude")}
-                  value={formData.location.lng}
+                  value={formData.location?.lng || ""}
                   disabled
                 />
               </div>
 
-              <div className="h-[400px] rounded-xl overflow-hidden border">
-                <MapContainer
-                  center={[33.3, 44.3]}
-                  zoom={10}
-                  style={{ height: "100%" }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <SearchControl />
-                  <LocationPicker setLatLng={setLatLng} />
-                </MapContainer>
-              </div>
+              <button
+                type="button"
+                onClick={onOpenMap}
+                className="flex items-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
+              >
+                <Icon icon="heroicons-outline:map" />
+                {t("addOfferPage.openMap") || "Open Map to Select Location"}
+              </button>
             </div>
+
+            {/* ✅ استخدم onCloseMap هنا */}
+            <MapModal
+              isOpen={isMapOpen}
+              onClose={onCloseMap}
+              setLatLng={setLatLng}
+              lat={formData.location?.lat}
+              lng={formData.location?.lng}
+            />
           </TabPanel>
 
           {/* DETAILS */}
@@ -327,15 +352,6 @@ export default function OfferForm({
           </TabPanel>
         </TabPanels>
       </TabGroup>
-
-      <div className="mt-6 flex justify-end">
-        <button
-          onClick={handleSubmit}
-          className="px-6 py-2 bg-blue-600 text-white rounded"
-        >
-          {t("addOfferPage.actions.save")}
-        </button>
-      </div>
     </>
   );
 }

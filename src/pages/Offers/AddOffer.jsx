@@ -14,6 +14,9 @@ export default function AddOfferPage() {
     setFiles,
     setLatLng,
     handleSubmit,
+    isMapOpen,
+    openMapModal,
+    closeMapModal,
   } = useAddOffer();
 
   return (
@@ -29,6 +32,9 @@ export default function AddOfferPage() {
           setFiles={setFiles}
           setLatLng={setLatLng}
           handleSubmit={handleSubmit}
+          isMapOpen={isMapOpen}
+          onOpenMap={openMapModal}
+          onCloseMap={closeMapModal}
         />
       </Card>
     </div>

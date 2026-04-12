@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 export function useAddOffer() {
   const navigation = useNavigate();
+  const [isMapOpen, setIsMapOpen] = useState(false);
+  const openMapModal = () => setIsMapOpen(true);
+  const closeMapModal = () => setIsMapOpen(false);
+
   const [formData, setFormData] = useState({
     title: "",
     code: "",
@@ -167,45 +171,45 @@ export function useAddOffer() {
     return Object.keys(newErrors).length === 0;
   };
 
- const handleSubmit = async () => {
-  // if (!validateForm()) return;
+  const handleSubmit = async () => {
+    // if (!validateForm()) return;
 
-  const form = new FormData();
+    const form = new FormData();
 
-  Object.keys(formData).forEach((key) => {
-    if (key === "nearbyPlaces") {
-      Object.keys(formData.nearbyPlaces).forEach((np) =>
-        form.append(`nearbyPlaces[${np}]`, formData.nearbyPlaces[np])
-      );
-    } else if (key === "location") {
-      // إرسال lat و lng بشكل منفصل للبقاء متوافقاً مع الموديل
-      form.append("location[lat]", formData.location.lat);
-      form.append("location[lng]", formData.location.lng);
-    } else if (formData[key] !== "" && formData[key] !== null) {
-      form.append(key, formData[key]);
+    Object.keys(formData).forEach((key) => {
+      if (key === "nearbyPlaces") {
+        Object.keys(formData.nearbyPlaces).forEach((np) =>
+          form.append(`nearbyPlaces[${np}]`, formData.nearbyPlaces[np]),
+        );
+      } else if (key === "location") {
+        // إرسال lat و lng بشكل منفصل للبقاء متوافقاً مع الموديل
+        form.append("location[lat]", formData.location.lat);
+        form.append("location[lng]", formData.location.lng);
+      } else if (formData[key] !== "" && formData[key] !== null) {
+        form.append(key, formData[key]);
+      }
+    });
+
+    Object.keys(features).forEach((key) =>
+      form.append(`features[${key}]`, String(features[key])),
+    );
+
+    if (files.mainImage) form.append("mainImage", files.mainImage);
+    files.images.forEach((f) => form.append("images", f));
+    files.files.forEach((f) => form.append("files", f));
+    files.videoFiles.forEach((f) => form.append("videoFiles", f));
+
+    try {
+      const res = await createOffer(form).unwrap();
+      toast.success("Offer added successfully");
+      setTimeout(() => {
+        navigation("/offers");
+      }, 1500);
+    } catch (err) {
+      toast.error("Failed to add offer");
+      console.error("ERROR:", err);
     }
-  });
-
-  Object.keys(features).forEach((key) =>
-    form.append(`features[${key}]`, String(features[key]))
-  );
-
-  if (files.mainImage) form.append("mainImage", files.mainImage);
-  files.images.forEach((f) => form.append("images", f));
-  files.files.forEach((f) => form.append("files", f));
-  files.videoFiles.forEach((f) => form.append("videoFiles", f));
-
-  try {
-    const res = await createOffer(form).unwrap();
-    toast.success("Offer added successfully");
-    setTimeout(() => {
-      navigation("/offers");
-    }, 1500);
-  } catch (err) {
-    toast.error("Failed to add offer");
-    console.error("ERROR:", err);
-  }
-};
+  };
 
   return {
     formData,
@@ -217,5 +221,9 @@ export function useAddOffer() {
     handleFeature,
     setLatLng,
     handleSubmit,
+    isMapOpen,
+    setIsMapOpen,
+    openMapModal,
+    closeMapModal,  
   };
 }
