@@ -6,6 +6,7 @@ import Textinput from "@/components/ui/Textinput";
 import Select from "@/components/ui/Select";
 import { useGetOffersQuery } from "@/store/api/Offers/OffersApi";
 import { socketService } from "@/socketService";
+import { useTranslation } from "react-i18next";
 
 const normalizeFilters = (f) => ({
   keyword: f.keyword || undefined,
@@ -36,14 +37,15 @@ const initialFilters = {
 };
 
 const OffersControlPage = () => {
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const { t } = useTranslation();
 
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
   const [appliedFilters, setAppliedFilters] = useState({});
 
   const normalizedFilters = normalizeFilters(appliedFilters);
 
-  const { data } = useGetOffersQuery(normalizedFilters, {
+  const { data, isLoading, isFetching } = useGetOffersQuery(normalizedFilters, {
     skip: !Object.keys(appliedFilters).length,
     refetchOnMountOrArgChange: true,
   });
@@ -66,14 +68,6 @@ const OffersControlPage = () => {
     setAppliedFilters({});
   };
 
-  const removeFilter = (key) => {
-    setAppliedFilters((prev) => {
-      const updated = { ...prev };
-      delete updated[key];
-      return updated;
-    });
-  };
-
   const applyFilters = () => {
     if (!Object.keys(appliedFilters).length) return;
 
@@ -88,21 +82,22 @@ const OffersControlPage = () => {
 
   return (
     <div className="flex md:space-x-5 relative min-h-screen">
-      {/* ================= MAIN ================= */}
       <div className="flex-1">
         <Card
-          title="Offers"
-          subtitle={`Results: ${data?.data?.length || 0}`}
+          className="relative"
+          title={t("offersControlPage.title")}
+          subtitle={`${t("offersControlPage.results")}: ${
+            data?.data?.length || 0
+          }`}
           headerSlot={
             <div className="flex gap-2">
               <Button
-                text={`Filters (${activeFilters.length})`}
+                text={`${t("offersControlPage.filters")} (${activeFilters.length})`}
                 className="btn-dark"
                 onClick={() => setIsFilterModalOpen(true)}
               />
-
               <Button
-                text="Apply on Map"
+                text={t("offersControlPage.applyOnMap")}
                 className={`btn-dark ${
                   activeFilters.length ? "" : "opacity-50 cursor-not-allowed"
                 }`}
@@ -112,15 +107,27 @@ const OffersControlPage = () => {
             </div>
           }
         >
+          {/* ✅ LOADING OVERLAY */}
+          {(isLoading || isFetching) && (
+            <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-10 rounded-xl">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 border-4 border-gray-300 border-t-gray-700 rounded-full animate-spin"></div>
+                <span className="text-sm text-gray-600">
+                  {t("common.loading")}
+                </span>
+              </div>
+            </div>
+          )}
+
           <table className="min-w-full divide-y">
             <thead>
               <tr>
-                <th className="table-th">Code</th>
-                <th className="table-th">Type</th>
-                <th className="table-th">Price</th>
-                <th className="table-th">City</th>
-                <th className="table-th">Bedrooms</th>
-                <th className="table-th">Space</th>
+                <th className="table-th">{t("offersControlPage.code")}</th>
+                <th className="table-th">{t("offersControlPage.type")}</th>
+                <th className="table-th">{t("offersControlPage.price")}</th>
+                <th className="table-th">{t("offersControlPage.city")}</th>
+                <th className="table-th">{t("offersControlPage.bedrooms")}</th>
+                <th className="table-th">{t("offersControlPage.space")}</th>
               </tr>
             </thead>
 
@@ -144,7 +151,7 @@ const OffersControlPage = () => {
               ) : (
                 <tr>
                   <td colSpan={6} className="text-center py-6 text-slate-500">
-                    No data available
+                    {t("offersControlPage.noData")}
                   </td>
                 </tr>
               )}
@@ -153,48 +160,53 @@ const OffersControlPage = () => {
         </Card>
       </div>
 
-      {/* ================= MODAL ================= */}
+      {/* FILTER MODAL */}
       <Modal
-        title="Filters"
+        title={t("offersControlPage.filters")}
         activeModal={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}
       >
         <div className="space-y-3">
           <Textinput
-            label="Keyword"
+            label={t("offersControlPage.keyword")}
+            placeholder={t("offersControlPage.Enterkeyword")}
             value={filters.keyword}
             onChange={(e) => handleChange("keyword", e.target.value)}
           />
 
           <Select
-            label="Process Type"
+            label={t("offersControlPage.processType")}
+            placeholder={t("addOfferPage.selectOption")}
             options={[
-              { label: "Sale", value: "sale" },
-              { label: "Rent", value: "rent" },
+              { label: t("offersControlPage.select.sale"), value: "sale" },
+              { label: t("offersControlPage.select.rent"), value: "rent" },
             ]}
             value={filters.processType}
             onChange={(e) => handleChange("processType", e.target.value)}
           />
 
           <Select
-            label="Estate Type"
+            label={t("offersControlPage.estateType")}
+            placeholder={t("addOfferPage.selectOption")}
             options={[
-              { label: "House", value: "house" },
-              { label: "Villa", value: "villa" },
-              { label: "Land", value: "land" },
+              { label: t("offersControlPage.select.house"), value: "house" },
+              { label: t("offersControlPage.select.villa"), value: "villa" },
+              { label: t("offersControlPage.select.land"), value: "land" },
             ]}
             value={filters.estateType}
             onChange={(e) => handleChange("estateType", e.target.value)}
           />
 
           <Textinput
-            label="City"
+            label={t("offersControlPage.city")}
+            placeholder={t("offersControlPage.Placeholdercity")}
             value={filters.city}
             onChange={(e) => handleChange("city", e.target.value)}
           />
 
           <Textinput
-            label="Bedrooms"
+            label={t("offersControlPage.bedrooms")}
+            placeholder={t("offersControlPage.Placeholderbedrooms")}
             type="number"
             value={filters.bedrooms}
             onChange={(e) => handleChange("bedrooms", e.target.value)}
@@ -202,13 +214,13 @@ const OffersControlPage = () => {
 
           <div className="flex gap-2">
             <Textinput
-              placeholder="Min Price"
+              placeholder={t("offersControlPage.minPrice")}
               type="number"
               value={filters.minPrice}
               onChange={(e) => handleChange("minPrice", e.target.value)}
             />
             <Textinput
-              placeholder="Max Price"
+              placeholder={t("offersControlPage.maxPrice")}
               type="number"
               value={filters.maxPrice}
               onChange={(e) => handleChange("maxPrice", e.target.value)}
@@ -217,13 +229,12 @@ const OffersControlPage = () => {
 
           <div className="flex gap-2 pt-2">
             <Button
-              text="Reset"
+              text={t("offersControlPage.reset")}
               className="btn-secondary w-full"
               onClick={resetFilters}
             />
-
             <Button
-              text="Apply Filters"
+              text={t("offersControlPage.applyFilters")}
               className="btn-dark w-full"
               onClick={applySearchFilters}
             />

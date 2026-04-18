@@ -1,6 +1,7 @@
 {
-  "Select Option": "",
+  "search": "ابحث هنا...",
 
+  "Logout": "تسجيل خروج",
   "sidebar": {
     "menu": "القائمة",
     "pages": "الصفحات",
@@ -45,12 +46,14 @@
     }
   },
   "addOfferPage": {
+    "header": "إضافة العرض",
     "tabs": {
       "basic": "المعلومات الأساسية",
       "location": "الموقع",
       "details": "تفاصيل العقار",
       "financial": "المالية",
-      "media": "الوسائط"
+      "media": "الوسائط",
+      "contact": "معلومات التواصل"
     },
     "propertyCode": "كود العقار",
     "operationType": "نوع العملية",
@@ -77,6 +80,13 @@
     "listingExpiryDate": "تاريخ انتهاء العرض",
     "lastModifiedDate": "آخر تعديل",
     "closedDate": "تاريخ الإغلاق",
+    "openMap": "افتح الخريطة",
+    "selectOption": "حدد خيار",
+    "agentName": "اسم الوكيل",
+  "agentPhone": "رقم الوكيل",
+  "agentEmail": "بريد الوكيل",
+  "ownerName": "اسم المالك",
+  "ownerNumber": "رقم المالك",
     "images": {
       "mainImage": "الصورة الرئيسية",
       "images": "الصور"
@@ -100,38 +110,80 @@
         "cash": "كاش",
         "installment": "تقسيط"
       }
+    },
+    "placeholders": {
+      "title": "أدخل عنوان العقار",
+      "code": "أدخل كود العقار",
+      "description": "اكتب وصف العقار",
+      "city": "أدخل المدينة",
+      "area": "أدخل الحي",
+      "address": "أدخل العنوان الكامل",
+      "latitude": "سيتم تحديد الموقع تلقائياً",
+      "longitude": "سيتم تحديد الموقع تلقائياً",
+      "areaSize": "أدخل المساحة الكلية",
+      "builtArea": "أدخل المساحة المبنية",
+      "landArea": "أدخل مساحة الأرض",
+      "rooms": "عدد غرف النوم",
+      "bathrooms": "عدد الحمامات",
+      "floorNumber": "أدخل رقم الطابق",
+      "totalFloors": "أدخل عدد الطوابق",
+      "price": "أدخل السعر",
+      "pricePerMeter": "أدخل سعر المتر",
+      "downPayment": "أدخل نسبة الدفعة الأولى",
+      "installmentMonths": "أدخل عدد أشهر التقسيط",
+      "listingExpiryDate": "اختر تاريخ الانتهاء",
+      "closedDate": "اختر تاريخ الإغلاق",
+      "agentName": "أدخل اسم الوكيل",
+    "agentPhone": "أدخل رقم الهاتف",
+    "agentEmail": "أدخل البريد الإلكتروني",
+    "ownerName": "أدخل اسم المالك",
+    "ownerNumber": "أدخل رقم المالك"
     }
   },
+  "offerDetails": {
+  "description": "الوصف",
+  "details": "تفاصيل العقار",
+  "features": "المميزات",
+  "contact": "معلومات التواصل"
+},
+"common": {
+  "loading": "جاري التحميل...",
+  "noData": "لا يوجد بيانات",
+  "noDescription": "لا يوجد وصف"
+},
+  "mapModal": {
+    "title": "اختر الموقع على الخريطة",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد الموقع"
+  },
   "offersControlPage": {
-    "loading": "جارٍ التحميل...",
+    "title": "العروض",
+    "results": "عدد النتائج",
     "filters": "الفلاتر",
-    "basicFilters": "الفلاتر الأساسية",
-    "keywordSearch": "بحث بالكلمة المفتاحية",
-    "keywordPlaceholder": "كود أو عنوان...",
-    "processType": "نوع العملية",
-    "select_processType": "اختر نوع العملية ",
-    "estateType": "نوع العقار",
-    "select_estateType": "اختر نوع العقار",
-    "location": "الموقع",
-    "city": "المدينة",
-    "cityPlaceholder": "المدينة...",
-    "neighborhood": "الحي",
-    "neighborhoodPlaceholder": "الحي...",
-    "specifications": "المواصفات",
-    "bedroomsMin": "عدد غرف النوم (الحد الأدنى)",
-    "bathroomsMin": "عدد الحمامات (الحد الأدنى)",
-    "price": "السعر",
-    "totalSpace": "المساحة الكلية (م²)",
-    "min": "الحد الأدنى",
-    "max": "الحد الأقصى",
-    "offersList": "قائمة العروض",
-    "offersFound": "عروض تم العثور عليها",
-    "applyFilters": "تطبيق الفلاتر",
-    "showOnMap": "أظهر على الخريطة",
+    "applyOnMap": "تطبيق على الخريطة",
     "code": "الكود",
-    "type": "نوع العقار",
-    "operation": "العملية",
-    "bedrooms": "عدد الغرف",
-    "bathrooms": "الحمامات"
+    "type": "النوع",
+    "price": "السعر",
+    "city": "المدينة",
+    "bedrooms": "غرف النوم",
+    "space": "المساحة",
+    "noData": "لا توجد بيانات",
+    "keyword": "كلمة البحث",
+    "processType": "نوع العملية",
+    "estateType": "نوع العقار",
+    "minPrice": "أقل سعر",
+    "maxPrice": "أعلى سعر",
+    "reset": "إعادة تعيين",
+    "applyFilters": "تطبيق الفلاتر",
+    "select": {
+      "sale": "بيع",
+      "rent": "إيجار",
+      "house": "منزل",
+      "villa": "فيلا",
+      "land": "أرض"
+    },
+    "Enterkeyword": "ابحث هنا ...",
+    "Placeholdercity": "ادخل مدينة",
+    "Placeholderbedrooms": " ادخل عدد الغرف"
   }
 }

@@ -44,7 +44,7 @@ console.log(offer);
         className="w-[85vw] max-w-[1100px] h-[90vh] bg-white rounded-[.5%] shadow-1xl overflow-hidden flex flex-col"
       >
         {/* ================= MEDIA HERO ================= */}
-        <div className="relative bg-black flex-[0.7] h-[70%]">
+        <div className="relative bg-black flex-[0.7] h-[75%]">
 
           {/* MAIN MEDIA */}
           {current.type === "image" && (
@@ -101,7 +101,7 @@ console.log(offer);
         </div>
 
         {/* ================= INFO ================= */}
-        <div className="flex-[0.3] p-6 overflow-y-auto bg-white">
+        <div className="flex-[0.3] p-4 overflow-y-auto bg-white  h-[75%]">
           <div className="flex justify-between items-start mb-3">
             <div>
               <h2 className="text-2xl font-bold">{offer.title}</h2>

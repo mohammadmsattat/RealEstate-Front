@@ -5,10 +5,17 @@ import {
 } from "@/store/api/Offers/OffersApi";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export function useEditOffer() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [isMapOpen, setIsMapOpen] = useState(false);
+
+  const openMapModal = () => setIsMapOpen(true);
+  const closeMapModal = () => setIsMapOpen(false);
 
   const { data, isLoading } = useGetOfferByIdQuery(id);
   const [updateOffer] = useUpdateOfferMutation();
@@ -17,8 +24,8 @@ export function useEditOffer() {
     title: "",
     code: "",
     description: "",
-    processType: "for_sale",
-    estateType: "apartment",
+    processType: "sale",
+    estateType: "house",
     city: "",
     neighborhood: "",
     address: "",
@@ -56,15 +63,55 @@ export function useEditOffer() {
     videoFiles: [],
   });
 
-  // ✅ Fill data from backend
+  // ================= helpers =================
+  const clean = (v) =>
+    v === null || v === undefined ? "" : v;
+
+  const isValid = (v) =>
+    v !== "" && v !== null && v !== undefined;
+
+  // ================= fill data =================
   useEffect(() => {
     if (!data?.data) return;
 
     const offer = data.data;
 
     setFormData({
-      ...offer,
-      location: offer.location || { lat: "", lng: "" },
+      title: clean(offer.title),
+      code: clean(offer.code),
+      description: clean(offer.description),
+      processType: clean(offer.processType) || "sale",
+      estateType: clean(offer.estateType) || "house",
+      city: clean(offer.city),
+      neighborhood: clean(offer.neighborhood),
+      address: clean(offer.address),
+      totalSpace: clean(offer.totalSpace),
+      builtArea: clean(offer.builtArea),
+      landArea: clean(offer.landArea),
+      bedrooms: clean(offer.bedrooms),
+      bathrooms: clean(offer.bathrooms),
+      floorNumber: clean(offer.floorNumber),
+      totalFloors: clean(offer.totalFloors),
+      price: clean(offer.price),
+      pricePerMeter: clean(offer.pricePerMeter),
+      currency: clean(offer.currency) || "USD",
+      paymentType: clean(offer.paymentType) || "cash",
+      downPayment: clean(offer.downPayment),
+      installmentMonths: clean(offer.installmentMonths),
+      propertyCondition: clean(offer.propertyCondition) || "good",
+      yearBuilt: clean(offer.yearBuilt),
+      furnishingStatus: clean(offer.furnishingStatus) || "unfurnished",
+      agentName: clean(offer.agentName),
+      agentPhone: clean(offer.agentPhone),
+      agentEmail: clean(offer.agentEmail),
+      ownerName: clean(offer.ownerName),
+      ownerNumber: clean(offer.ownerNumber),
+      location: {
+        lat: offer.location?.lat ?? "",
+        lng: offer.location?.lng ?? "",
+      },
+      listingExpiryDate: clean(offer.listingExpiryDate),
+      closedDate: clean(offer.closedDate),
     });
 
     setFeatures(offer.features || {});
@@ -72,17 +119,26 @@ export function useEditOffer() {
 
   // ================= handlers =================
   const handleChange = (field) => (e) => {
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+    setFormData((prev) => ({
+      ...prev,
+      [field]: e.target.value,
+    }));
   };
 
   const handleFeature = (key) => {
-    setFeatures((prev) => ({ ...prev, [key]: !prev[key] }));
+    setFeatures((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
   };
 
   const setLatLng = (latlng) => {
     setFormData((prev) => ({
       ...prev,
-      location: { lat: latlng.lat, lng: latlng.lng },
+      location: {
+        lat: latlng.lat,
+        lng: latlng.lng,
+      },
     }));
   };
 
@@ -91,25 +147,38 @@ export function useEditOffer() {
     const form = new FormData();
 
     Object.keys(formData).forEach((key) => {
+      const value = formData[key];
+
+      // location handling
       if (key === "location") {
-        form.append("location[lat]", formData.location.lat);
-        form.append("location[lng]", formData.location.lng);
-      } else if (formData[key] !== "" && formData[key] !== null) {
-        form.append(key, formData[key]);
+        const lat = Number(value.lat);
+        const lng = Number(value.lng);
+
+        if (!isNaN(lat)) form.append("location[lat]", lat);
+        if (!isNaN(lng)) form.append("location[lng]", lng);
+
+        return;
+      }
+
+      // skip empty values
+      if (isValid(value)) {
+        form.append(key, value);
       }
     });
 
-    Object.keys(features).forEach((key) =>
-      form.append(`features[${key}]`, String(features[key]))
-    );
+    // features
+    Object.keys(features).forEach((key) => {
+      form.append(`features[${key}]`, features[key] ? "true" : "false");
+    });
 
+    // files
     if (files.mainImage) form.append("mainImage", files.mainImage);
     files.images.forEach((f) => form.append("images", f));
     files.files.forEach((f) => form.append("files", f));
     files.videoFiles.forEach((f) => form.append("videoFiles", f));
 
     try {
-      await updateOffer({ id, data:form }).unwrap();
+      await updateOffer({ id, data: form }).unwrap();
       toast.success("Offer updated successfully");
       navigate("/offers");
     } catch (err) {
@@ -119,6 +188,7 @@ export function useEditOffer() {
   };
 
   return {
+    t,
     formData,
     features,
     files,
@@ -128,5 +198,9 @@ export function useEditOffer() {
     setFiles,
     setLatLng,
     handleSubmit,
+    isMapOpen,
+    setIsMapOpen,
+    openMapModal,
+    closeMapModal,
   };
 }

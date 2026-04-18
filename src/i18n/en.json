@@ -1,5 +1,7 @@
 {
-  "Select Option":"Select Option",
+  "search": "search...",
+  "Logout": "Logout",
+  "Select Option": "Select Option",
   "sidebar": {
     "menu": "Menu",
     "pages": "Pages",
@@ -42,12 +44,14 @@
     }
   },
   "addOfferPage": {
+    "header": "Add Offer",
     "tabs": {
       "basic": "Basic Info",
       "location": "Location",
       "details": "Property Details",
       "financial": "Financial",
-      "media": "Media"
+      "media": "Media",
+      "contact": "Contact Info"
     },
     "propertyCode": "Property Code",
     "operationType": "Operation Type",
@@ -73,7 +77,14 @@
     "installmentMonths": "Installment Months",
     "listingExpiryDate": "Listing Expiry Date",
     "lastModifiedDate": "Last Modified Date",
+    "openMap": "Open Map",
+    "selectOption": "select Option",
     "closedDate": "Closed Date",
+    "agentName": "Enter agent name",
+    "agentPhone": "Enter phone number",
+    "agentEmail": "Enter email",
+    "ownerName": "Enter owner name",
+    "ownerNumber": "Enter owner phone",
     "images": {
       "mainImage": "Main Image",
       "images": "Images"
@@ -97,38 +108,80 @@
         "cash": "Cash",
         "installment": "Installment"
       }
+    },
+    "placeholders": {
+      "title": "Enter property title",
+      "code": "Enter property code",
+      "description": "Write property description",
+      "city": "Enter city",
+      "area": "Enter neighborhood",
+      "address": "Enter full address",
+      "latitude": "Latitude will appear automatically",
+      "longitude": "Longitude will appear automatically",
+      "areaSize": "Enter total space (m²)",
+      "builtArea": "Enter built area",
+      "landArea": "Enter land area",
+      "rooms": "Number of bedrooms",
+      "bathrooms": "Number of bathrooms",
+      "floorNumber": "Enter floor number",
+      "totalFloors": "Enter total floors",
+      "price": "Enter price",
+      "pricePerMeter": "Enter price per meter",
+      "downPayment": "Enter down payment %",
+      "installmentMonths": "Enter installment months",
+      "listingExpiryDate": "Select expiry date",
+      "closedDate": "Select closed date",
+      "agentName": "Enter agent name",
+      "agentPhone": "Enter phone number",
+      "agentEmail": "Enter email",
+      "ownerName": "Enter owner name",
+      "ownerNumber": "Enter owner phone"
     }
-  },"offersControlPage": {
+  },
+  "mapModal": {
+    "title": "Select Location on Map",
+    "cancel": "Cancel",
+    "confirm": "Confirm Location"
+  },
+  "offerDetails": {
+    "description": "Description",
+    "details": "Property Details",
+    "features": "Features",
+    "contact": "Contact Info"
+  },
+  "common": {
     "loading": "Loading...",
+    "noData": "No Data Found",
+    "noDescription": "No description available"
+  },
+  "offersControlPage": {
+    "title": "Offers",
+    "results": "Results",
     "filters": "Filters",
-    "basicFilters": "Basic Filters",
-    "keywordSearch": "Keyword Search",
-    "keywordPlaceholder": "Code or title...",
-    "processType": "Process Type",
-    "select_processType": "select Process Type",
-    "estateType": "Estate Type",
-    "select_estateType": "select Estate Type",
-    "location": "Location",
-    "city": "City",
-    "cityPlaceholder": "City...",
-    "neighborhood": "Neighborhood",
-    "neighborhoodPlaceholder": "Neighborhood...",
-    "specifications": "Specifications",
-    "bedroomsMin": "Bedrooms (min)",
-    "bathroomsMin": "Bathrooms (min)",
-    "price": "Price",
-    "totalSpace": "Total Space (sqm)",
-    "min": "Min",
-    "max": "Max",
-    "offersList": "Offers List",
-    "offersFound": "offers found",
-    "applyFilters": "Apply Filters",
-    "showOnMap": "Show ON Map",
+    "applyOnMap": "Apply on Map",
     "code": "Code",
     "type": "Type",
-    "operation": "Operation",
+    "price": "Price",
+    "city": "City",
     "bedrooms": "Bedrooms",
-    "bathrooms": "Bathrooms"
+    "space": "Space",
+    "noData": "No data available",
+    "keyword": "Keyword",
+    "processType": "Process Type",
+    "estateType": "Estate Type",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "reset": "Reset",
+    "applyFilters": "Apply Filters",
+    "select": {
+      "sale": "Sale",
+      "rent": "Rent",
+      "house": "House",
+      "villa": "Villa",
+      "land": "Land"
+    },
+    "Enterkeyword": "Enter keyword",
+    "Placeholdercity": "Enter City",
+    "Placeholderbedrooms": " Enter Rooms"
   }
- 
 }

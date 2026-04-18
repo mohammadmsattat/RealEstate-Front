@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import "leaflet-geosearch/dist/geosearch.css";
 import L from "leaflet";
+import { useTranslation } from "react-i18next";
 
 // Fix for default marker icons in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -48,6 +49,8 @@ function LocationPicker({ setLatLng, tempLatLng, setTempLatLng }) {
 }
 
 export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
+  const { t } = useTranslation();
+
   const [tempLatLng, setTempLatLng] = useState({
     lat: lat || 33.3152,
     lng: lng || 44.3661,
@@ -61,12 +64,13 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4">
+    <div className="fixed inset-0 z-5000 flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] w-full max-w-4xl mx-4">
+        
         {/* Modal Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <h3 className="text-lg font-semibold text-gray-800">
-            Select Location on Map
+            {t("mapModal.title")}
           </h3>
           <button
             onClick={onClose}
@@ -97,8 +101,8 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <SearchControl />
-            <LocationPicker 
-              setLatLng={setLatLng} 
+            <LocationPicker
+              setLatLng={setLatLng}
               tempLatLng={tempLatLng}
               setTempLatLng={setTempLatLng}
             />
@@ -111,13 +115,13 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
             onClick={onClose}
             className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
           >
-            Cancel
+            {t("mapModal.cancel")}
           </button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+            className="btn-dark px-4 py-2 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            Confirm Location
+            {t("mapModal.confirm")}
           </button>
         </div>
       </div>

@@ -20,10 +20,18 @@ const actions = [
   { name: "edit", icon: "heroicons:pencil-square" },
 ];
 
+// ✅ helpers للترجمة (حل نظيف بدون كسر النظام)
+const getPropertyTypeLabel = (t, value) =>
+  t(`addOfferPage.select.property.${value}`, value);
+
+const getOperationTypeLabel = (t, value) =>
+  t(`addOfferPage.select.operation.${value}`, value);
+
 const OffersPage = () => {
   const { t } = useTranslation();
   const { data, error, isLoading, isSuccess, refetch } = useGetOffersQuery();
   const navigate = useNavigate();
+console.log(data);
 
   const [
     deleteOffer,
@@ -45,14 +53,11 @@ const OffersPage = () => {
     if (error) console.log("Offers error:", error);
   }, [data, isSuccess, error]);
 
-  // الحذف (عنصر واحد أو عدة عناصر)
   const handleDelete = async () => {
     try {
       if (selectedRows.length > 0) {
-        // حذف كل العناصر المحددة
         await Promise.all(selectedRows.map((id) => deleteOffer(id).unwrap()));
       } else if (selectedOffer?._id) {
-        // حذف عنصر واحد
         await deleteOffer(selectedOffer._id).unwrap();
       }
 
@@ -72,16 +77,6 @@ const OffersPage = () => {
     );
   };
 
-  const toggleSelectAll = (rows) => {
-    const ids = rows.map((r) => r.original._id);
-    const allSelected = ids.every((id) => selectedRows.includes(id));
-    if (allSelected) {
-      setSelectedRows((prev) => prev.filter((id) => !ids.includes(id)));
-    } else {
-      setSelectedRows((prev) => [...new Set([...prev, ...ids])]);
-    }
-  };
-
   const tableData = useMemo(() => {
     if (!data?.data) return [];
     return data.data.map((offer) => ({
@@ -98,32 +93,44 @@ const OffersPage = () => {
     () => [
       {
         id: "selection",
-
         Cell: ({ row }) => (
           <input
             type="checkbox"
-            className="table-checkbox"
+            className="table-checkbox cursor-pointer"
             checked={selectedRows.includes(row.original._id)}
             onChange={() => toggleRow(row.original._id)}
           />
         ),
       },
       { Header: t("offersPage.code"), accessor: "propertyCode" },
-      { Header: t("offersPage.type"), accessor: "propertyType" },
-      { Header: t("offersPage.operation"), accessor: "operationType" },
+
+      // ✅ FIXED HERE
+      {
+        Header: t("offersPage.type"),
+        accessor: "propertyType",
+        Cell: ({ value }) => getPropertyTypeLabel(t, value),
+      },
+
+      {
+        Header: t("offersPage.operation"),
+        accessor: "operationType",
+        Cell: ({ value }) => getOperationTypeLabel(t, value),
+      },
+
       { Header: t("offersPage.price"), accessor: "price" },
       { Header: t("offersPage.city"), accessor: "city" },
+
       {
         Header: t("offersPage.map"),
         Cell: ({ row }) => (
           <Link
             to={`/offers/${row.original._id}/map`}
-            className="text-blue-600 hover:underline"
+            className="text-blue-400 hover:underline"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={25}
-              height={25}
+              height={25} 
               viewBox="0 0 100 100"
             >
               <path
@@ -139,10 +146,12 @@ const OffersPage = () => {
           </Link>
         ),
       },
+
       {
         Header: t("offersPage.actionsTitle"),
         Cell: ({ row }) => {
           const offer = row.original;
+
           return (
             <Dropdown
               label={<Icon icon="heroicons-outline:dots-vertical" />}
@@ -151,11 +160,7 @@ const OffersPage = () => {
               {actions.map((item, i) => (
                 <MenuItem key={i}>
                   <div
-                    className={`${
-                      item.name === "delete"
-                        ? "bg-danger-500/30 text-danger-500 hover:bg-danger-500 hover:text-white"
-                        : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600/50"
-                    } w-full px-4 py-2 text-sm cursor-pointer flex space-x-2 items-center rtl:space-x-reverse`}
+                    className="w-full px-4 py-2 text-sm cursor-pointer flex space-x-2 items-center"
                     onClick={() => {
                       if (item.name === "edit")
                         navigate(`/offers/edit/${offer._id}`);
@@ -206,9 +211,6 @@ const OffersPage = () => {
   if (isLoading)
     return (
       <Card noBorder>
-        <div className="md:flex justify-between items-center mb-6">
-          <h4 className="card-title">{t("offersPage.title")}</h4>
-        </div>
         <ListLoading count={6} />
       </Card>
     );
@@ -220,7 +222,11 @@ const OffersPage = () => {
       <div className="md:flex justify-between items-center mb-6">
         <h4 className="card-title">{t("offersPage.title")}</h4>
         <div className="flex space-x-3 items-center">
-          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+          <GlobalFilter
+            filter={globalFilter}
+            setFilter={setGlobalFilter}
+            t={t}
+          />
           <Button
             text={t("offersPage.addOffer")}
             icon="heroicons-outline:plus"
@@ -262,7 +268,7 @@ const OffersPage = () => {
                 return (
                   <tr
                     {...row.getRowProps()}
-                    className={`hover:bg-slate-100 transition-colors ${
+                    className={`hover:bg-slate-200 transition-colors ${
                       selectedRows.includes(row.original._id)
                         ? "bg-blue-50"
                         : ""

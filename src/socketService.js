@@ -1,4 +1,5 @@
 import { io } from "socket.io-client";
+import { baseURL } from "./Api/globalData";
 
 class SocketService {
   constructor() {
@@ -7,7 +8,7 @@ class SocketService {
 
   connect() {
     if (!this.socket) {
-      this.socket = io("http://localhost:8001");
+      this.socket = io(baseURL);
 
       this.socket.on("connect", () => {
         console.log("🟢 Connected to server:", this.socket.id);

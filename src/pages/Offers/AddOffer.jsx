@@ -24,7 +24,7 @@ export default function AddOfferPage() {
   return (
     <div className="grid grid-cols-1">
       <Card
-        title="Add Offer"
+        title={t("addOfferPage.header")}
         headerSlot={
           <Button
             text={t("addOfferPage.actions.save")}

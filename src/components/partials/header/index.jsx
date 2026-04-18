@@ -18,8 +18,10 @@ import useMobileMenu from "@/hooks/useMobileMenu";
 import MonoChrome from "./Tools/MonoChrome";
 import HeaderCart from "./Tools/cart";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Header = ({ className = "custom-class" }) => {
+  const {t}=useTranslation();
   const navigate =useNavigate();
   const [collapsed, setMenuCollapsed] = useSidebar();
   const { width, breakpoints } = useWidth();
@@ -136,10 +138,10 @@ const Header = ({ className = "custom-class" }) => {
             {/* {width >= breakpoints.md && <Profile />} */}
             <div
               onClick={handleLogout}
-              className="flex items-center gap-2 cursor-pointer text-red-500 hover:text-red-600 transition"
+              className="flex items-center gap-2 cursor-pointer text-gray-500 hover:text-red-600 transition"
             >
               <Icon width="20" icon="heroicons-outline:logout" />
-              <span className="text-sm">Logout</span>
+              <span className="text-sm">{t("Logout")}</span>
             </div>
             {width <= breakpoints.md && (
               <div
