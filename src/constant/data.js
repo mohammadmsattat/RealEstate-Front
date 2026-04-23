@@ -49,7 +49,10 @@ export const menuItems = [
     icon: "heroicons-outline:home",
     isOpen: true,
     isHide: true,
-    child: [{ childtitle: "offers", childlink: "offers" }],
+    child: [
+      { childtitle: "offers", childlink: "offers" },
+      { childtitle: "Requests", childlink: "Requests" },
+    ],
   },
   {
     title: "map",

@@ -7,14 +7,12 @@
     "pages": "الصفحات",
     "realEstate": "العقارات",
     "offers": "العروض",
+    "Requests": "الطلبات",
     "customers": "العملاء",
     "representative": "المندوب",
     "settings": "الإعدادات",
     "users": "المستخدمون",
-    "map": "الخريطة",
-    "map control": "تحكم الخريطة",
-    "categories": "الفئات",
-    "zones": "المناطق"
+    "map": "الخريطة"
   },
 
   "offersPage": {
@@ -83,10 +81,10 @@
     "openMap": "افتح الخريطة",
     "selectOption": "حدد خيار",
     "agentName": "اسم الوكيل",
-  "agentPhone": "رقم الوكيل",
-  "agentEmail": "بريد الوكيل",
-  "ownerName": "اسم المالك",
-  "ownerNumber": "رقم المالك",
+    "agentPhone": "رقم الوكيل",
+    "agentEmail": "بريد الوكيل",
+    "ownerName": "اسم المالك",
+    "ownerNumber": "رقم المالك",
     "images": {
       "mainImage": "الصورة الرئيسية",
       "images": "الصور"
@@ -134,23 +132,23 @@
       "listingExpiryDate": "اختر تاريخ الانتهاء",
       "closedDate": "اختر تاريخ الإغلاق",
       "agentName": "أدخل اسم الوكيل",
-    "agentPhone": "أدخل رقم الهاتف",
-    "agentEmail": "أدخل البريد الإلكتروني",
-    "ownerName": "أدخل اسم المالك",
-    "ownerNumber": "أدخل رقم المالك"
+      "agentPhone": "أدخل رقم الهاتف",
+      "agentEmail": "أدخل البريد الإلكتروني",
+      "ownerName": "أدخل اسم المالك",
+      "ownerNumber": "أدخل رقم المالك"
     }
   },
   "offerDetails": {
-  "description": "الوصف",
-  "details": "تفاصيل العقار",
-  "features": "المميزات",
-  "contact": "معلومات التواصل"
-},
-"common": {
-  "loading": "جاري التحميل...",
-  "noData": "لا يوجد بيانات",
-  "noDescription": "لا يوجد وصف"
-},
+    "description": "الوصف",
+    "details": "تفاصيل العقار",
+    "features": "المميزات",
+    "contact": "معلومات التواصل"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "noData": "لا يوجد بيانات",
+    "noDescription": "لا يوجد وصف"
+  },
   "mapModal": {
     "title": "اختر الموقع على الخريطة",
     "cancel": "إلغاء",

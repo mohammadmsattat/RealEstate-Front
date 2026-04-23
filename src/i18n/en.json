@@ -7,14 +7,14 @@
     "pages": "Pages",
     "realEstate": "Real Estate",
     "offers": "Offers",
+    "Requests":"Requests",
     "customers": "Customers",
     "representative": "Representative",
     "settings": "Settings",
     "users": "Users",
     "map": "Map",
-    "map control": "map control",
-    "categories": "Categories",
-    "zones": "Zones"
+    "map control": "map control"
+
   },
 
   "offersPage": {

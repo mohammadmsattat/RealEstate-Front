@@ -134,6 +134,10 @@ import OffersControlPage from "./pages/MapClient/OffersControlPage";
 import OfferDetailsPage from "./pages/Offers/OfferDetailsPage";
 import EditOfferPage from "./pages/Offers/EditOfferPage";
 import ProtectedRoute from "./ProtectedRoute";
+import RequestsPage from "./pages/Requests";
+import AddRequestPage from "./pages/Requests/AddRequestPage";
+import EditRequestPage from "./pages/Requests/EditRequestPage";
+import RequestDetailsPage from "./pages/Requests/RequestDetailsPage";
 
 function App() {
   return (
@@ -244,6 +248,11 @@ function App() {
             <Route path="offers/:id/map" element={<OfferMapPage />} />
             <Route path="offers/view/:id" element={<OfferDetailsPage />} />
             <Route path="offers/edit/:id" element={<EditOfferPage />} />
+            <Route path="Requests" element={<RequestsPage />} />
+            <Route path="Requests/add" element={<AddRequestPage />} />
+            <Route path="Requests/edit/:id" element={<EditRequestPage />} />
+            <Route path="Requests/view/:id" element={<RequestDetailsPage />} />
+
             <Route path="offers/control-map" element={<OffersControlPage />} />
 
             <Route path="users" element={<UsersPage />} />

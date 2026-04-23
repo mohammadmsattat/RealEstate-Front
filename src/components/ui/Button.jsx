@@ -27,6 +27,7 @@ function Button({
           }
         ${disabled ? " opacity-40 cursor-not-allowed" : ""}
         ${className}`}
+        // disabled={disabled}
         >
           {/* if has children and not loading*/}
           {children && !isLoading && children}

@@ -6,20 +6,10 @@ export const baseURL = "http://localhost:8001";
 export const AuthEndPoint = "/api/auth";
 
 // Offers
-// export const OffersEndPoint = "/api/offers";
 export const OffersEndPoint = "/api/estate-offers";
 
-// Representatives
-export const RepresentativesEndPoint = "/api/representatives";
-
-// Customers
-export const CustomersEndPoint = "/api/customers";
+//requests
+export const RequestsEndPoint = "/api/estate-requests";
 
 // Users
 export const UsersEndPoint = "/api/users";
-
-// Categories
-export const CategoriesEndPoint = "/api/categories";
-
-
-export const ZonesEndPoint = "/api/zones";
