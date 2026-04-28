@@ -73,7 +73,7 @@
     "price": "السعر",
     "pricePerMeter": "السعر لكل متر",
     "paymentMethod": "طريقة الدفع",
-    "downPayment": "الدفع المقدم %",
+    "downPayment": "أقل سعر",
     "installmentMonths": "أشهر التقسيط",
     "listingExpiryDate": "تاريخ انتهاء العرض",
     "lastModifiedDate": "آخر تعديل",
@@ -85,6 +85,9 @@
     "agentEmail": "بريد الوكيل",
     "ownerName": "اسم المالك",
     "ownerNumber": "رقم المالك",
+    "PropertyPartner": "شراكة العرض",
+    "roofPriority": "ملكية السطح",
+
     "images": {
       "mainImage": "الصورة الرئيسية",
       "images": "الصور"
@@ -135,7 +138,10 @@
       "agentPhone": "أدخل رقم الهاتف",
       "agentEmail": "أدخل البريد الإلكتروني",
       "ownerName": "أدخل اسم المالك",
-      "ownerNumber": "أدخل رقم المالك"
+      "ownerNumber": "أدخل رقم المالك",
+      "PropertyPartner": "ادخل شراكة العرض",
+          "roofPriority":"ادحل ملكية السطح"
+
     }
   },
   "offerDetails": {
@@ -163,7 +169,7 @@
     "type": "النوع",
     "price": "السعر",
     "city": "المدينة",
-    "bedrooms": "غرف النوم",
+    "bedrooms": "الغرف ",
     "space": "المساحة",
     "noData": "لا توجد بيانات",
     "keyword": "كلمة البحث",

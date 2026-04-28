@@ -61,13 +61,20 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
     onClose();
   };
 
+  useEffect(() => {
+    setTempLatLng({
+      lat: lat || 33.3152,
+      lng: lng || 44.3661,
+    });
+  }, [lat, lng, isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-5000 flex items-center justify-center">
       <div className="bg-white rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] w-full max-w-4xl mx-4">
-        
-        {/* Modal Header */}
+
+        {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <h3 className="text-lg font-semibold text-gray-800">
             {t("mapModal.title")}
@@ -92,15 +99,22 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
           </button>
         </div>
 
-        {/* Map Container */}
+        {/* Map */}
         <div className="h-[500px] w-full">
           <MapContainer
             center={[tempLatLng.lat, tempLatLng.lng]}
             zoom={13}
             style={{ height: "100%", width: "100%" }}
           >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+            {/* 🔥 Satellite Layer */}
+            <TileLayer
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              attribution="Tiles © Esri"
+            />
+
             <SearchControl />
+
             <LocationPicker
               setLatLng={setLatLng}
               tempLatLng={tempLatLng}
@@ -109,7 +123,7 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
           </MapContainer>
         </div>
 
-        {/* Modal Footer */}
+        {/* Footer */}
         <div className="flex justify-end gap-3 p-4 border-t">
           <button
             onClick={onClose}
@@ -117,6 +131,7 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
           >
             {t("mapModal.cancel")}
           </button>
+
           <button
             onClick={handleConfirm}
             className="btn-dark px-4 py-2 text-white rounded-lg hover:bg-blue-700 transition"
@@ -124,6 +139,7 @@ export default function MapModal({ isOpen, onClose, setLatLng, lat, lng }) {
             {t("mapModal.confirm")}
           </button>
         </div>
+
       </div>
     </div>
   );

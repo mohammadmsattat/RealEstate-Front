@@ -20,28 +20,20 @@ const OfferMapPage = () => {
   if (error)
     return (
       <div className="flex flex-col justify-center items-center h-[500px] text-center">
-        <Icon
-          icon="heroicons-outline:exclamation-circle"
-          className="text-red-500 text-4xl mb-4"
-        />
         <h2 className="text-xl font-bold text-gray-800 mb-2">
           Failed to load offer
         </h2>
         <p className="text-gray-600">
-          There was an error retrieving the offer details. Please try again
-          later.
+          There was an error retrieving the offer details. Please try again later.
         </p>
       </div>
     );
 
-  const offer = data.data;
+  const offer = data?.data;
+
   if (!offer)
     return (
       <div className="flex flex-col justify-center items-center h-[500px] text-center">
-        <Icon
-          icon="heroicons-outline:exclamation-triangle"
-          className="text-yellow-500 text-4xl mb-4"
-        />
         <h2 className="text-xl font-bold text-gray-800 mb-2">
           Offer not found
         </h2>
@@ -52,30 +44,33 @@ const OfferMapPage = () => {
     );
 
   const position = [
-    offer.location.lat, // latitude
-    offer.location.lng, // longitude
+    offer.location?.lat,
+    offer.location?.lng,
   ];
 
   return (
     <div className="w-full h-[500px]">
       <MapContainer
         center={position}
-        zoom={15}
+        zoom={16}
         scrollWheelZoom={true}
         style={{ height: "100%", width: "100%" }}
       >
+        {/* 🛰️ Satellite Layer */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          attribution="Tiles © Esri"
         />
+
         <Marker position={position}>
           <Popup>
             <div>
               <h4 className="font-bold">{offer.title}</h4>
               <p>
-                Price: {offer.price} {offer.currency} <br />
-                Area: {offer.area} m² <br />
-                Rooms: {offer.rooms} <br />
+                Price: {offer.price?.minUSD ?? offer.price} {offer.currency}
+                <br />
+                Rooms: {offer.rooms}
+                <br />
                 Bathrooms: {offer.bathrooms}
               </p>
             </div>

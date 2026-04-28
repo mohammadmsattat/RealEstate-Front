@@ -7,14 +7,13 @@
     "pages": "Pages",
     "realEstate": "Real Estate",
     "offers": "Offers",
-    "Requests":"Requests",
+    "Requests": "Requests",
     "customers": "Customers",
     "representative": "Representative",
     "settings": "Settings",
     "users": "Users",
     "map": "Map",
     "map control": "map control"
-
   },
 
   "offersPage": {
@@ -66,7 +65,7 @@
     "areaSize": "Total Space",
     "builtArea": "Built Area",
     "landArea": "Land Area",
-    "rooms": "Bedrooms",
+    "rooms": "Rooms",
     "bathrooms": "Bathrooms",
     "floorNumber": "Floor",
     "totalFloors": "Total Floors",
@@ -85,6 +84,8 @@
     "agentEmail": "Enter email",
     "ownerName": "Enter owner name",
     "ownerNumber": "Enter owner phone",
+    "PropertyPartner": "Property Partner",
+    "roofPriority": "Roof Priority",
     "images": {
       "mainImage": "Main Image",
       "images": "Images"
@@ -135,7 +136,9 @@
       "agentPhone": "Enter phone number",
       "agentEmail": "Enter email",
       "ownerName": "Enter owner name",
-      "ownerNumber": "Enter owner phone"
+      "ownerNumber": "Enter owner phone",
+      "PropertyPartner": "Enter Property Partner",
+      "roofPriority": "Enter Roof Priority"
     }
   },
   "mapModal": {

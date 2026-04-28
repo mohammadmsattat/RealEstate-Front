@@ -12,7 +12,7 @@ const InfoItem = ({ icon, label, value }) => (
     </div>
     <div className="text-sm">
       <div className="text-gray-500">{label}</div>
-      <div className="font-semibold text-gray-800">{value || "-"}</div>
+      <div className="font-semibold text-gray-800">{value ?? "-"}</div>
     </div>
   </div>
 );
@@ -44,11 +44,10 @@ const OfferDetailsPage = () => {
     ...(offer.videoFiles || []),
   ].filter(Boolean);
 
-  if (media.length === 0) {
-    media.push("/placeholder.jpg");
-  }
+  if (media.length === 0) media.push("/placeholder.jpg");
 
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % media.length);
+
   const prevSlide = () =>
     setCurrentIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
 
@@ -80,6 +79,7 @@ const OfferDetailsPage = () => {
 
       {/* HERO */}
       <div className="grid lg:grid-cols-2 gap-6">
+        {/* MEDIA */}
         <div className="bg-white rounded-2xl shadow p-4">
           <div className="relative">
             {media[currentIndex]?.includes(".mp4") ? (
@@ -114,31 +114,31 @@ const OfferDetailsPage = () => {
           </div>
         </div>
 
-        {/* PRICE + QUICK INFO */}
+        {/* PRICE */}
         <div className="bg-white rounded-2xl shadow p-6 space-y-6">
           <div className="text-3xl font-bold text-blue-600">
-            {offer.price} {offer.currency}
+            {offer.price?.maxUSD || offer.price?.minUSD || "-"} {offer.currency}
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <InfoItem
               icon="heroicons-outline:home"
-              label={t("offersPage.type")}
+              label="Type"
               value={offer.estateType}
             />
             <InfoItem
               icon="heroicons-outline:switch-horizontal"
-              label={t("offersPage.operation")}
+              label="Process"
               value={offer.processType}
             />
             <InfoItem
               icon="heroicons-outline:credit-card"
-              label={t("addOfferPage.paymentMethod")}
+              label="Payment"
               value={offer.paymentType}
             />
             <InfoItem
               icon="heroicons-outline:hashtag"
-              label={t("offersPage.code")}
+              label="Code"
               value={offer.code}
             />
           </div>
@@ -157,33 +157,54 @@ const OfferDetailsPage = () => {
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:arrows-expand"
-            label="Area"
+            label="Total Space"
             value={offer.totalSpace}
           />
           <InfoItem
             icon="heroicons-outline:office-building"
-            label="Built"
+            label="Built Area"
             value={offer.builtArea}
           />
           <InfoItem
             icon="heroicons-outline:map"
-            label="Land"
+            label="Land Area"
             value={offer.landArea}
           />
           <InfoItem
             icon="heroicons-outline:bed"
             label="Rooms"
-            value={offer.bedrooms}
+            value={offer.rooms}
           />
           <InfoItem
             icon="heroicons-outline:beaker"
-            label="Baths"
+            label="Bathrooms"
             value={offer.bathrooms}
           />
           <InfoItem
             icon="heroicons-outline:layers"
             label="Floor"
             value={offer.floorNumber}
+          />
+
+          <InfoItem
+            icon="heroicons-outline:collection"
+            label="Total Floors"
+            value={offer.totalFloors}
+          />
+          <InfoItem
+            icon="heroicons-outline:calendar"
+            label="Year Built"
+            value={offer.yearBuilt}
+          />
+          <InfoItem
+            icon="heroicons-outline:office-building"
+            label="Condition"
+            value={offer.propertyCondition}
+          />
+          <InfoItem
+            icon="heroicons-outline:arrow-right"
+            label="Facade"
+            value={offer.facade}
           />
         </div>
       </Card>
@@ -193,9 +214,22 @@ const OfferDetailsPage = () => {
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:calculator"
-            label="Price/m²"
-            value={offer.pricePerMeter}
+            label="Price SYP"
+            value={`${offer.price?.minSYP || 0} - ${offer.price?.maxSYP || 0}`}
           />
+
+          <InfoItem
+            icon="heroicons-outline:currency-dollar"
+            label="Price USD"
+            value={`${offer.price?.minUSD || 0} - ${offer.price?.maxUSD || 0}`}
+          />
+
+          <InfoItem
+            icon="heroicons-outline:chart-bar"
+            label="Price / Meter"
+            value={`${offer.pricePerMeterFrom || 0} - ${offer.pricePerMeterTo || 0}`}
+          />
+
           <InfoItem
             icon="heroicons-outline:cash"
             label="Down Payment"
@@ -214,7 +248,7 @@ const OfferDetailsPage = () => {
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:user"
-            label="Agent"
+            label="Agent Name"
             value={offer.agentName}
           />
           <InfoItem
@@ -222,11 +256,69 @@ const OfferDetailsPage = () => {
             label="Phone"
             value={offer.agentPhone}
           />
+
           <InfoItem
-            icon="heroicons-outline:mail"
-            label="Email"
-            value={offer.agentEmail}
+            icon="heroicons-outline:user-circle"
+            label="Owner"
+            value={offer.ownerName}
           />
+          <InfoItem
+            icon="heroicons-outline:phone"
+            label="Owner Phone"
+            value={offer.ownerNumber}
+          />
+          <InfoItem
+            icon="heroicons-outline:link"
+            label="Partnership"
+            value={offer.partnership}
+          />
+        </div>
+      </Card>
+
+      {/* LOCATION */}
+      <Card title="Location">
+        <div className="grid md:grid-cols-2 gap-3">
+          <InfoItem
+            icon="heroicons-outline:location-marker"
+            label="City"
+            value={offer.city}
+          />
+          <InfoItem
+            icon="heroicons-outline:map"
+            label="Neighborhood"
+            value={offer.neighborhood}
+          />
+          <InfoItem
+            icon="heroicons-outline:location-marker"
+            label="Address"
+            value={offer.address}
+          />
+          <InfoItem
+            icon="heroicons-outline:globe"
+            label="Lat"
+            value={offer.location?.lat}
+          />
+          <InfoItem
+            icon="heroicons-outline:globe"
+            label="Lng"
+            value={offer.location?.lng}
+          />
+        </div>
+      </Card>
+
+      {/* DIRECTIONS */}
+      <Card title="Directions">
+        <div className="flex gap-2 flex-wrap">
+          {offer.directions?.length
+            ? offer.directions.map((d, i) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 bg-slate-100 rounded-full text-sm"
+                >
+                  {d}
+                </span>
+              ))
+            : "-"}
         </div>
       </Card>
     </div>

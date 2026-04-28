@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 
 const actions = [
   { name: "view", icon: "heroicons-outline:eye" },
+  { name: "Offers", icon: "heroicons-outline:eye" },
   { name: "edit", icon: "heroicons:pencil-square" },
 ];
 
@@ -134,10 +135,8 @@ const RequestsPage = () => {
                         navigate(`/Requests/edit/${request._id}`);
                       else if (item.name === "view")
                         navigate(`/Requests/view/${request._id}`);
-                      else if (item.name === "delete") {
-                        setSelectedRequest(request);
-                        setIsDeleteModalOpen(true);
-                      }
+                      else if (item.name === "Offers")
+                        navigate(`/Requests/match-offers/${request._id}`);
                     }}
                   >
                     <Icon icon={item.icon} />

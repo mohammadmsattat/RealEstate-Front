@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "@/components/ui/Icon";
 const Textarea = ({
   label,
-  placeholder,
+  placeholder,value,
   classLabel = "form-label",
   className = "",
   classGroup = "",
@@ -23,6 +23,8 @@ const Textarea = ({
   onChange,
   ...rest
 }) => {
+  console.log(value);
+  
   return (
     <div
       className={`fromGroup  ${error ? "has-error" : ""}  ${
@@ -44,6 +46,7 @@ const Textarea = ({
           <textarea
             {...register(name)}
             {...rest}
+            value={value}
             className={`${
               error ? " has-error" : " "
             } form-control py-2 ${className}  `}
@@ -60,7 +63,8 @@ const Textarea = ({
           <textarea
             className={`${
               error ? " has-error" : " "
-            } form-control py-2 ${className}  `}
+            } form-control py-2 ${className}  `}             value={value}
+
             placeholder={placeholder}
             readOnly={readonly}
             disabled={disabled}

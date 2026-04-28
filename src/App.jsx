@@ -138,6 +138,7 @@ import RequestsPage from "./pages/Requests";
 import AddRequestPage from "./pages/Requests/AddRequestPage";
 import EditRequestPage from "./pages/Requests/EditRequestPage";
 import RequestDetailsPage from "./pages/Requests/RequestDetailsPage";
+import MatchOffers from "./pages/Requests/MatchOffers";
 
 function App() {
   return (
@@ -252,6 +253,7 @@ function App() {
             <Route path="Requests/add" element={<AddRequestPage />} />
             <Route path="Requests/edit/:id" element={<EditRequestPage />} />
             <Route path="Requests/view/:id" element={<RequestDetailsPage />} />
+            <Route path="Requests/match-offers/:id" element={<MatchOffers />} />
 
             <Route path="offers/control-map" element={<OffersControlPage />} />
 

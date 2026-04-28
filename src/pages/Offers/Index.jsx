@@ -84,7 +84,7 @@ console.log(data);
       propertyCode: offer.code,
       propertyType: offer.estateType,
       operationType: offer.processType,
-      price: offer.price,
+      // price: offer.price,
       city: offer.city,
     }));
   }, [data]);
@@ -117,7 +117,7 @@ console.log(data);
         Cell: ({ value }) => getOperationTypeLabel(t, value),
       },
 
-      { Header: t("offersPage.price"), accessor: "price" },
+      // { Header: t("offersPage.price"), accessor: "price" },
       { Header: t("offersPage.city"), accessor: "city" },
 
       {

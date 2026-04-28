@@ -29,6 +29,7 @@ export function useEditOffer() {
     city: "",
     neighborhood: "",
     address: "",
+
     totalSpace: "",
     builtArea: "",
     landArea: "",
@@ -36,21 +37,35 @@ export function useEditOffer() {
     bathrooms: "",
     floorNumber: "",
     totalFloors: "",
-    price: "",
-    pricePerMeter: "",
+
+    price: {
+      minSYP: "",
+      maxSYP: "",
+      minUSD: "",
+      maxUSD: "",
+    },
+
+    pricePerMeterFrom: "",
+    pricePerMeterTo: "",
+
     currency: "USD",
     paymentType: "cash",
     downPayment: "",
     installmentMonths: "",
+
     propertyCondition: "good",
     yearBuilt: "",
     furnishingStatus: "unfurnished",
+
     agentName: "",
     agentPhone: "",
     agentEmail: "",
+
     ownerName: "",
     ownerNumber: "",
+
     location: { lat: "", lng: "" },
+
     listingExpiryDate: "",
     closedDate: "",
   });
@@ -64,11 +79,9 @@ export function useEditOffer() {
   });
 
   // ================= helpers =================
-  const clean = (v) =>
-    v === null || v === undefined ? "" : v;
+  const clean = (v) => (v === null || v === undefined ? "" : v);
 
-  const isValid = (v) =>
-    v !== "" && v !== null && v !== undefined;
+  const isValid = (v) => v !== "" && v !== null && v !== undefined;
 
   // ================= fill data =================
   useEffect(() => {
@@ -85,6 +98,7 @@ export function useEditOffer() {
       city: clean(offer.city),
       neighborhood: clean(offer.neighborhood),
       address: clean(offer.address),
+
       totalSpace: clean(offer.totalSpace),
       builtArea: clean(offer.builtArea),
       landArea: clean(offer.landArea),
@@ -92,24 +106,38 @@ export function useEditOffer() {
       bathrooms: clean(offer.bathrooms),
       floorNumber: clean(offer.floorNumber),
       totalFloors: clean(offer.totalFloors),
-      price: clean(offer.price),
-      pricePerMeter: clean(offer.pricePerMeter),
+
+      price: {
+        minSYP: offer.price?.minSYP ?? "",
+        maxSYP: offer.price?.maxSYP ?? "",
+        minUSD: offer.price?.minUSD ?? "",
+        maxUSD: offer.price?.maxUSD ?? "",
+      },
+
+      pricePerMeterFrom: clean(offer.pricePerMeterFrom),
+      pricePerMeterTo: clean(offer.pricePerMeterTo),
+
       currency: clean(offer.currency) || "USD",
       paymentType: clean(offer.paymentType) || "cash",
       downPayment: clean(offer.downPayment),
       installmentMonths: clean(offer.installmentMonths),
+
       propertyCondition: clean(offer.propertyCondition) || "good",
       yearBuilt: clean(offer.yearBuilt),
       furnishingStatus: clean(offer.furnishingStatus) || "unfurnished",
+
       agentName: clean(offer.agentName),
       agentPhone: clean(offer.agentPhone),
       agentEmail: clean(offer.agentEmail),
+
       ownerName: clean(offer.ownerName),
       ownerNumber: clean(offer.ownerNumber),
+
       location: {
         lat: offer.location?.lat ?? "",
         lng: offer.location?.lng ?? "",
       },
+
       listingExpiryDate: clean(offer.listingExpiryDate),
       closedDate: clean(offer.closedDate),
     });
@@ -119,10 +147,25 @@ export function useEditOffer() {
 
   // ================= handlers =================
   const handleChange = (field) => (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: e.target.value,
-    }));
+    const value = e.target.value;
+
+    // دعم nested مثل price.minSYP
+    if (field.includes(".")) {
+      const [parent, child] = field.split(".");
+
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value === "" ? "" : Number(value),
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
   };
 
   const handleFeature = (key) => {
@@ -149,18 +192,19 @@ export function useEditOffer() {
     Object.keys(formData).forEach((key) => {
       const value = formData[key];
 
-      // location handling
       if (key === "location") {
-        const lat = Number(value.lat);
-        const lng = Number(value.lng);
-
-        if (!isNaN(lat)) form.append("location[lat]", lat);
-        if (!isNaN(lng)) form.append("location[lng]", lng);
-
+        form.append("location[lat]", value.lat);
+        form.append("location[lng]", value.lng);
         return;
       }
 
-      // skip empty values
+      if (key === "price") {
+        Object.keys(value).forEach((p) => {
+          form.append(`price[${p}]`, value[p]);
+        });
+        return;
+      }
+
       if (isValid(value)) {
         form.append(key, value);
       }
@@ -168,7 +212,7 @@ export function useEditOffer() {
 
     // features
     Object.keys(features).forEach((key) => {
-      form.append(`features[${key}]`, features[key] ? "true" : "false");
+      form.append(`features[${key}]`, String(features[key]));
     });
 
     // files

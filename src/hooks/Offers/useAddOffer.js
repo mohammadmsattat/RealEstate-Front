@@ -5,12 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export function useAddOffer() {
-    const { t } = useTranslation();
-  
+  const { t } = useTranslation();
   const navigation = useNavigate();
+
   const [isMapOpen, setIsMapOpen] = useState(false);
-  const openMapModal = () => setIsMapOpen(true);
-  const closeMapModal = () => setIsMapOpen(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -21,42 +19,58 @@ export function useAddOffer() {
     city: "",
     neighborhood: "",
     address: "",
+
     totalSpace: "",
     builtArea: "",
     landArea: "",
-    bedrooms: "",
+    bedrooms: "", // UI فقط
     bathrooms: "",
     floorNumber: "",
     totalFloors: "",
-    price: "",
-    pricePerMeter: "",
+
+    price: {
+      minSYP: "",
+      maxSYP: "",
+      minUSD: "",
+      maxUSD: "",
+    },
+
+    pricePerMeterFrom: "",
+    pricePerMeterTo: "",
+
     currency: "USD",
     paymentType: "cash",
     downPayment: "",
     installmentMonths: "",
+
     propertyCondition: "good",
     yearBuilt: "",
     furnishingStatus: "unfurnished",
+
     agentName: "",
     agentPhone: "",
     agentEmail: "",
+
     ownerName: "",
     ownerNumber: "",
+    partnership: "",
+
     location: {
       lat: "",
       lng: "",
     },
+
     areaUnit: "sqm",
-    livingRooms: "",
-    totalRooms: "",
-    hasElevator: false,
+
     isNegotiable: false,
     shortDescription: "",
+
     videoUrl: "",
     virtualTourUrl: "",
+
     listingExpiryDate: "",
-    lastModifiedDate: "",
     closedDate: "",
+
     nearbyPlaces: {
       schools: 0,
       hospitals: 0,
@@ -64,6 +78,12 @@ export function useAddOffer() {
       restaurants: 0,
       metro: 0,
     },
+
+    directions: [],
+    facade: "",
+    recordNumber: "",
+    parcelNumber: "",
+    roofPriority: "",
   });
 
   const [features, setFeatures] = useState({
@@ -93,65 +113,33 @@ export function useAddOffer() {
   });
 
   const [errors, setErrors] = useState({});
-
   const [createOffer] = useCreateOfferMutation();
 
-  const validateField = (field, value) => {
-    switch (field) {
-      case "title":
-        if (!value) return "Title is required";
-        if (value.length < 5) return "Minimum 5 characters";
-        if (value.length > 200) return "Max 200 characters";
-        return "";
+  // 🔹 handle change
+const handleChange = (field) => (e) => {
+  const value = e.target.value;
 
-      case "description":
-        if (!value) return "Description is required";
-        if (value.length > 5000) return "Max 5000 characters";
-        return "";
+  // لو الحقل nested مثل price.minSYP
+  if (field.includes(".")) {
+    const [parent, child] = field.split(".");
 
-      case "price":
-        if (!value) return "Price is required";
-        if (Number(value) <= 0) return "Price must be greater than 0";
-        return "";
-
-      case "totalSpace":
-        if (!value) return "Total space is required";
-        if (Number(value) <= 0) return "Must be greater than 0";
-        return "";
-
-      case "city":
-        if (!value) return "City is required";
-        return "";
-
-      case "neighborhood":
-        if (!value) return "Neighborhood is required";
-        return "";
-
-      case "agentEmail":
-        if (value && !/^\S+@\S+\.\S+$/.test(value))
-          return "Invalid email format";
-        return "";
-
-      default:
-        return "";
-    }
-  };
-
-  const handleChange = (field) => (e) => {
-    const value = e.target.value;
-
-    setFormData((prev) => ({ ...prev, [field]: value }));
-
-    const error = validateField(field, value);
-
-    setErrors((prev) => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: error,
+      [parent]: {
+        ...prev[parent],
+        [child]: value === "" ? "" : Number(value),
+      },
     }));
-  };
+  } else {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
+};
 
   const handleFeature = (key) => {
-    setFeatures({ ...features, [key]: !features[key] });
+    setFeatures((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   const setLatLng = (latlng) => {
@@ -161,56 +149,106 @@ export function useAddOffer() {
     }));
   };
 
-  const validateForm = () => {
-    let newErrors = {};
+  // 🔥 🔥 🔥 TRANSFORM LAYER
+  const buildPayload = () => {
+    return {
+      ...formData,
 
-    Object.keys(formData).forEach((key) => {
-      const error = validateField(key, formData[key]);
-      if (error) newErrors[key] = error;
-    });
+      // ✅ إصلاح rooms
+      rooms: Number(formData.bedrooms) || 0,
 
-    setErrors(newErrors);
+      // ✅ تحويل الأرقام
+      totalSpace: Number(formData.totalSpace) || 0,
+      builtArea: Number(formData.builtArea) || 0,
+      landArea: Number(formData.landArea) || 0,
+      bathrooms: Number(formData.bathrooms) || 0,
 
-    return Object.keys(newErrors).length === 0;
+      floorNumber: formData.floorNumber ? Number(formData.floorNumber) : null,
+
+      totalFloors: formData.totalFloors ? Number(formData.totalFloors) : null,
+
+      yearBuilt: formData.yearBuilt ? Number(formData.yearBuilt) : null,
+
+      downPayment: Number(formData.downPayment) || 0,
+      installmentMonths: Number(formData.installmentMonths) || 0,
+
+      pricePerMeterFrom: formData.pricePerMeterFrom
+        ? Number(formData.pricePerMeterFrom)
+        : null,
+
+      pricePerMeterTo: formData.pricePerMeterTo
+        ? Number(formData.pricePerMeterTo)
+        : null,
+
+      // ✅ price object
+      price: {
+        minSYP: Number(formData.price.minSYP) || 0,
+        maxSYP: Number(formData.price.maxSYP) || 0,
+        minUSD: Number(formData.price.minUSD) || 0,
+        maxUSD: Number(formData.price.maxUSD) || 0,
+      },
+
+      // ✅ features
+      features: features,
+
+      // ❌ حذف UI فقط
+      bedrooms: undefined,
+    };
   };
 
   const handleSubmit = async () => {
-    // if (!validateForm()) return;
+    const payload = buildPayload();
+console.log(payload);
 
     const form = new FormData();
 
-    Object.keys(formData).forEach((key) => {
-      if (key === "nearbyPlaces") {
-        Object.keys(formData.nearbyPlaces).forEach((np) =>
-          form.append(`nearbyPlaces[${np}]`, formData.nearbyPlaces[np]),
-        );
-      } else if (key === "location") {
-        // إرسال lat و lng بشكل منفصل للبقاء متوافقاً مع الموديل
-        form.append("location[lat]", formData.location.lat);
-        form.append("location[lng]", formData.location.lng);
-      } else if (formData[key] !== "" && formData[key] !== null) {
-        form.append(key, formData[key]);
+    Object.keys(payload).forEach((key) => {
+      const value = payload[key];
+
+      if (value === undefined || value === null || value === "") return;
+
+      if (key === "location") {
+        form.append("location[lat]", value.lat);
+        form.append("location[lng]", value.lng);
+      } else if (key === "price") {
+        Object.keys(value).forEach((p) => {
+          form.append(`price[${p}]`, value[p]);
+        });
+      } else if (key === "features") {
+        Object.keys(value).forEach((f) => {
+          form.append(`features[${f}]`, String(value[f]));
+        });
+      } else if (key === "nearbyPlaces") {
+        Object.keys(value).forEach((n) => {
+          form.append(`nearbyPlaces[${n}]`, value[n]);
+        });
+      } else if (Array.isArray(value)) {
+        value.forEach((v) => form.append(key, v));
+      } else if (typeof value === "object") {
+        Object.keys(value).forEach((k) => {
+          form.append(`${key}[${k}]`, value[k]);
+        });
+      } else {
+        form.append(key, value);
       }
     });
 
-    Object.keys(features).forEach((key) =>
-      form.append(`features[${key}]`, String(features[key])),
-    );
-
+    // ✅ files
     if (files.mainImage) form.append("mainImage", files.mainImage);
     files.images.forEach((f) => form.append("images", f));
     files.files.forEach((f) => form.append("files", f));
     files.videoFiles.forEach((f) => form.append("videoFiles", f));
 
     try {
-      const res = await createOffer(form).unwrap();
+      await createOffer(form).unwrap();
       toast.success("Offer added successfully");
+
       setTimeout(() => {
         navigation("/offers");
-      }, 1500);
+      }, 1200);
     } catch (err) {
       toast.error("Failed to add offer");
-      console.error("ERROR:", err);
+      console.error(err);
     }
   };
 
@@ -220,14 +258,17 @@ export function useAddOffer() {
     features,
     files,
     errors,
+
     setFiles,
     handleChange,
     handleFeature,
     setLatLng,
+
     handleSubmit,
+
     isMapOpen,
     setIsMapOpen,
-    openMapModal,
-    closeMapModal,  
+    openMapModal: () => setIsMapOpen(true),
+    closeMapModal: () => setIsMapOpen(false),
   };
 }
