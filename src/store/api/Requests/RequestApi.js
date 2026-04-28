@@ -3,7 +3,6 @@ import { apiSlice } from "../apiSlice";
 
 export const requestApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    
     // ===== GET ALL REQUESTS =====
     getRequests: builder.query({
       query: (filters = {}) => {
@@ -68,6 +67,10 @@ export const requestApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Requests"],
     }),
 
+    matchRequestWithOffers: builder.query({
+      query: (id) => `${RequestsEndPoint}/match-offers/${id}`,
+      providesTags: (result, error, id) => [{ type: "Requests", id }],
+    }),
   }),
 });
 
@@ -77,4 +80,5 @@ export const {
   useCreateRequestMutation,
   useUpdateRequestMutation,
   useDeleteRequestMutation,
+  useMatchRequestWithOffersQuery,
 } = requestApi;

@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // home pages  & dashboard
-//import Dashboard from "./pages/dashboard";
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Ecommerce = lazy(() => import("./pages/dashboard/ecommerce"));
 const CrmPage = lazy(() => import("./pages/dashboard/crm"));
@@ -142,8 +141,9 @@ import MatchOffers from "./pages/Requests/MatchOffers";
 
 function App() {
   return (
-    <main className="App  relative">
+    <main className="App relative">
       <Routes>
+        {/* Auth Routes */}
         <Route path="/" element={<AuthLayout />}>
           <Route path="/" element={<Login />} />
           <Route path="/login2" element={<Login2 />} />
@@ -158,22 +158,26 @@ function App() {
           <Route path="/lock-screen2" element={<LockScreen2 />} />
           <Route path="/lock-screen3" element={<LockScreen3 />} />
         </Route>
+
+        {/* Protected Routes */}
         <Route path="/*" element={<ProtectedRoute />}>
-          <Route path="/*" element={<Layout />}>
+          <Route element={<Layout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="ecommerce" element={<Ecommerce />} />
             <Route path="crm" element={<CrmPage />} />
             <Route path="project" element={<ProjectPage />} />
             <Route path="banking" element={<BankingPage />} />
+
             {/* App pages */}
             <Route path="todo" element={<TodoPage />} />
             <Route path="email" element={<EmailPage />} />
             <Route path="chat" element={<ChatPage />} />
             <Route path="projects" element={<ProjectPostPage />} />
-            <Route path={"projects/:id"} element={<ProjectDetailsPage />} />
+            <Route path="projects/:id" element={<ProjectDetailsPage />} />
             <Route path="project-details" element={<ProjectDetailsPage />} />
             <Route path="kanban" element={<KanbanPage />} />
             <Route path="calender" element={<CalenderPage />} />
+
             {/* Components pages */}
             <Route path="button" element={<Button />} />
             <Route path="dropdown" element={<Dropdown />} />
@@ -191,6 +195,8 @@ function App() {
             <Route path="Paginations" element={<Pagination />} />
             <Route path="tab-accordion" element={<TabsAc />} />
             <Route path="video" element={<Video />} />
+
+            {/* Forms pages */}
             <Route path="input" element={<InputPage />} />
             <Route path="textarea" element={<TextareaPage />} />
             <Route path="checkbox" element={<CheckboxPage />} />
@@ -205,12 +211,20 @@ function App() {
             <Route path="form-wizard" element={<FormWizard />} />
             <Route path="select" element={<SelectPage />} />
             <Route path="date-time-picker" element={<Flatpicker />} />
+
+            {/* Chart pages */}
             <Route path="appex-chart" element={<AppexChartPage />} />
             <Route path="chartjs" element={<ChartJs />} />
             <Route path="recharts" element={<Recharts />} />
+
+            {/* Map page */}
             <Route path="map" element={<MapPage />} />
+
+            {/* Table pages */}
             <Route path="table-basic" element={<BasicTablePage />} />
             <Route path="react-table" element={<TanstackTable />} />
+
+            {/* Utility pages */}
             <Route path="invoice" element={<InvoicePage />} />
             <Route path="invoice-add" element={<InvoiceAddPage />} />
             <Route path="invoice-preview" element={<InvoicePreviewPage />} />
@@ -228,6 +242,7 @@ function App() {
             <Route path="notifications" element={<NotificationPage />} />
             <Route path="changelog" element={<ChangelogPage />} />
 
+            {/* Ecommerce pages */}
             <Route path="products" element={<EcommercePage />} />
             <Route path="products/:id" element={<ProductDetails />} />
             <Route path="cart" element={<Cart />} />
@@ -241,28 +256,35 @@ function App() {
             <Route path="sellers" element={<Sellers />} />
             <Route path="invoice-ecommerce" element={<InvoiceEPage />} />
 
-            <Route path="*" element={<Navigate to="/404" />} />
+            {/* ========== MY APP ROUTES ========== */}
 
-            {/* //////////my ap ////////////// */}
+            {/* Offers */}
             <Route path="offers" element={<OffersPage />} />
             <Route path="offers/add" element={<AddOfferPage />} />
             <Route path="offers/:id/map" element={<OfferMapPage />} />
             <Route path="offers/view/:id" element={<OfferDetailsPage />} />
             <Route path="offers/edit/:id" element={<EditOfferPage />} />
-            <Route path="Requests" element={<RequestsPage />} />
-            <Route path="Requests/add" element={<AddRequestPage />} />
-            <Route path="Requests/edit/:id" element={<EditRequestPage />} />
-            <Route path="Requests/view/:id" element={<RequestDetailsPage />} />
-            <Route path="Requests/match-offers/:id" element={<MatchOffers />} />
-
             <Route path="offers/control-map" element={<OffersControlPage />} />
 
+            {/* Requests */}
+            <Route path="Requests/add" element={<AddRequestPage />} />
+            <Route path="Requests/match-offers/:id" element={<MatchOffers />} />
+            <Route path="Requests/edit/:id" element={<EditRequestPage />} />
+            <Route path="Requests/view/:id" element={<RequestDetailsPage />} />
+            <Route path="Requests" element={<RequestsPage />} />
+
+            {/* Users */}
             <Route path="users" element={<UsersPage />} />
+
+            {/* 404 - Catch all (MUST be last) */}
+            <Route path="*" element={<Navigate to="/404" />} />
           </Route>
         </Route>
 
+        {/* Public Map */}
         <Route path="offers/map" element={<MapPage1 />} />
 
+        {/* Static Pages */}
         <Route
           path="/404"
           element={
