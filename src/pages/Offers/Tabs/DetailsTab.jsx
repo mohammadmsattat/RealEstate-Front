@@ -1,65 +1,56 @@
 import { TabPanel } from "@headlessui/react";
 import Textinput from "@/components/ui/Textinput";
-import Select from "@/components/ui/Select";
 import ReactSelect from "react-select";
 
-const directionOptions = [
-  { label: "North", value: "north" },
-  { label: "South", value: "south" },
-  { label: "East", value: "east" },
-  { label: "West", value: "west" },
+const directionOptions = (t) => [
+  { label: t("addOfferPage.direction.north"), value: "north" },
+  { label: t("addOfferPage.direction.south"), value: "south" },
+  { label: t("addOfferPage.direction.east"), value: "east" },
+  { label: t("addOfferPage.direction.west"), value: "west" },
 ];
 
-// MultiSelect wrapper بدون كسر التصميم
 const MultiSelect = (props) => <ReactSelect {...props} isMulti />;
 
 export default function DetailsTab({ formData, handleChange, t }) {
+  const options = directionOptions(t);
+
   return (
     <TabPanel>
       <div className="grid md:grid-cols-2 gap-4">
 
         <Textinput
-          label="Facade"
+          label={t("addOfferPage.facade")}
+          placeholder={t("addOfferPage.placeholders.facade")}
           value={formData.facade || ""}
           onChange={handleChange("facade")}
         />
 
-        <Select
-          label="Property Condition"
-          value={formData.propertyCondition}
-          options={[
-            "new",
-            "excellent",
-            "very_good",
-            "good",
-            "needs_renovation",
-            "under_construction",
-          ].map((v) => ({
-            label: v,
-            value: v,
-          }))}
+        <Textinput
+          label={t("addOfferPage.propertyCondition")}
+          placeholder={t("addOfferPage.placeholders.propertyCondition")}
+          value={formData.propertyCondition || ""}
           onChange={handleChange("propertyCondition")}
         />
 
         <Textinput
-          label="Furnishing"
-          value={formData.Furnishing?.join(",") || ""}
-          onChange={(e) =>
-            handleChange("Furnishing")({
-              target: { value: e.target.value.split(",") },
-            })
-          }
+          label={t("addOfferPage.ownershipType")}
+          placeholder={t("addOfferPage.placeholders.ownershipType")}
+          value={formData.OwnershipType || ""}
+          onChange={handleChange("ownershipType")}
         />
 
+        {/* DIRECTIONS */}
         <div>
-          <label className="form-label">Directions</label>
+          <label className="form-label">
+            {t("addOfferPage.direction.label")}
+          </label>
 
           <MultiSelect
             className="react-select"
             classNamePrefix="select"
-            options={directionOptions}
-            value={directionOptions.filter((opt) =>
-              formData.directions?.includes(opt.value)
+            options={options}
+            value={options.filter((opt) =>
+              formData.directions?.includes(opt.value),
             )}
             onChange={(selected) => {
               handleChange("directions")({
@@ -70,16 +61,6 @@ export default function DetailsTab({ formData, handleChange, t }) {
             }}
           />
         </div>
-
-        <Textinput
-          label="features"
-          value={formData.features?.join(",") || ""}
-          onChange={(e) =>
-            handleChange("features")({
-              target: { value: e.target.value.split(",") },
-            })
-          }
-        />
 
         <Textinput
           type="number"
@@ -109,8 +90,8 @@ export default function DetailsTab({ formData, handleChange, t }) {
           type="number"
           label={t("addOfferPage.rooms")}
           placeholder={t("addOfferPage.placeholders.rooms")}
-          value={formData.bedrooms}
-          onChange={handleChange("bedrooms")}
+          value={formData.rooms}
+          onChange={handleChange("rooms")}
         />
 
         <Textinput
@@ -130,7 +111,7 @@ export default function DetailsTab({ formData, handleChange, t }) {
         />
 
         <Textinput
-          type="string"
+          type="text"
           label={t("addOfferPage.roofPriority")}
           placeholder={t("addOfferPage.placeholders.roofPriority")}
           value={formData.roofPriority}
@@ -144,15 +125,17 @@ export default function DetailsTab({ formData, handleChange, t }) {
           value={formData.yearBuilt}
           onChange={handleChange("yearBuilt")}
         />
+
         <Textinput
-          type="string"
+          type="text"
           label={t("addOfferPage.recordNumber")}
           placeholder={t("addOfferPage.placeholders.recordNumber")}
           value={formData.recordNumber}
           onChange={handleChange("recordNumber")}
         />
+
         <Textinput
-          type="string"
+          type="text"
           label={t("addOfferPage.parcelNumber")}
           placeholder={t("addOfferPage.placeholders.parcelNumber")}
           value={formData.parcelNumber}
@@ -166,6 +149,7 @@ export default function DetailsTab({ formData, handleChange, t }) {
           value={formData.totalFloors}
           onChange={handleChange("totalFloors")}
         />
+
       </div>
     </TabPanel>
   );

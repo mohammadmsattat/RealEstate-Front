@@ -11,6 +11,8 @@ export default function EditOfferPage() {
     features,
     files,
     isLoading,
+     isSuccess,
+    isUpdating,
     handleChange,
     handleFeature,
     setFiles,
@@ -41,6 +43,8 @@ export default function EditOfferPage() {
             text={t("addOfferPage.actions.save")}
             className="btn-dark w-full"
             onClick={handleSubmit}
+            isLoading={isUpdating || isSuccess}
+            disabled={isUpdating || isSuccess}
           />
         }
       >

@@ -53,6 +53,23 @@
       "media": "الوسائط",
       "contact": "معلومات التواصل"
     },
+    "offerNumber": "رقم العرض",
+    "staffBarcode": "باركود الموظف",
+    "facade": "الواجهة",
+    "propertyCondition": "حالة العقار",
+    "ownershipType": "نوع الملكية",
+    "directions": "الاتجاهات",
+    "features": "المميزات",
+    "yearBuilt": "سنة البناء",
+    "recordNumber": "رقم السجل",
+    "parcelNumber": "رقم المقسم",
+
+    "priceMinSYP": "أقل سعر (ل.س)",
+    "priceMaxSYP": "أعلى سعر (ل.س)",
+    "priceMinUSD": "أقل سعر (دولار)",
+    "priceMaxUSD": "أعلى سعر (دولار)",
+    "pricePerMeterFrom": "سعر المتر (من)",
+    "pricePerMeterTo": "سعر المتر (إلى)",
     "propertyCode": "كود العقار",
     "operationType": "نوع العملية",
     "propertyType": "نوع العقار",
@@ -87,7 +104,17 @@
     "ownerNumber": "رقم المالك",
     "PropertyPartner": "شراكة العرض",
     "roofPriority": "ملكية السطح",
-
+    "direction": {
+      "label": "الاتجاه",
+      "north": "الشمال",
+      "south": "الجنوب",
+      "east": "الشرق",
+      "west": "الغرب",
+      "northeast": "الشمال الشرقي",
+      "northwest": "الشمال الغربي",
+      "southeast": "الجنوب الشرقي",
+      "southwest": "الجنوب الغربي"
+    },
     "images": {
       "mainImage": "الصورة الرئيسية",
       "images": "الصور"
@@ -103,9 +130,11 @@
         "rent": "إيجار"
       },
       "property": {
-        "house": "منزل",
+        "house": "بيت",
         "villa": "فيلا",
-        "land": "أرض"
+        "land": "أرض",
+        "farm": "مزرعة",
+        "servicedPlot": " محضر"
       },
       "payment": {
         "cash": "كاش",
@@ -113,6 +142,8 @@
       }
     },
     "placeholders": {
+      "offerNumber": "أدخل رقم العرض",
+      "staffBarcode": "أدخل باركود الموظف",
       "title": "أدخل عنوان العقار",
       "code": "أدخل كود العقار",
       "description": "اكتب وصف العقار",
@@ -140,15 +171,30 @@
       "ownerName": "أدخل اسم المالك",
       "ownerNumber": "أدخل رقم المالك",
       "PropertyPartner": "ادخل شراكة العرض",
-          "roofPriority":"ادحل ملكية السطح"
+      "priceMinSYP": "أدخل الحد الأدنى للسعر (ليرة سورية)",
+      "priceMaxSYP": "أدخل الحد الأعلى للسعر (ليرة سورية)",
+      "priceMinUSD": "أدخل الحد الأدنى للسعر (دولار)",
+      "priceMaxUSD": "أدخل الحد الأعلى للسعر (دولار)",
 
+      "pricePerMeterFrom": "أدخل أقل سعر للمتر",
+      "pricePerMeterTo": "أدخل أعلى سعر للمتر",
+
+      "facade": "أدخل الواجهة",
+      "propertyCondition": "أدخل حالة العقار",
+      "ownershipType": "أدخل نوع الملكية",
+
+      "yearBuilt": "أدخل سنة البناء",
+      "recordNumber": "أدخل رقم السجل",
+      "parcelNumber": "أدخل رقم القسيمة"
     }
   },
   "offerDetails": {
     "description": "الوصف",
     "details": "تفاصيل العقار",
     "features": "المميزات",
-    "contact": "معلومات التواصل"
+    "contact": "معلومات التواصل",
+    "createdAt": "تاريخ الإنشاء",
+    "lastModified": "آخر تعديل"
   },
   "common": {
     "loading": "جاري التحميل...",

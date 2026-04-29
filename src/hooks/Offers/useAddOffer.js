@@ -19,7 +19,8 @@ export function useAddOffer() {
     city: "",
     neighborhood: "",
     address: "",
-
+    offerNumber: "",
+    staffParcode: "",
     totalSpace: "",
     builtArea: "",
     landArea: "",
@@ -27,7 +28,7 @@ export function useAddOffer() {
     bathrooms: "",
     floorNumber: "",
     totalFloors: "",
-
+    OwnershipType: "",
     price: {
       minSYP: "",
       maxSYP: "",
@@ -43,7 +44,7 @@ export function useAddOffer() {
     downPayment: "",
     installmentMonths: "",
 
-    propertyCondition: "good",
+    propertyCondition: "",
     yearBuilt: "",
     furnishingStatus: "unfurnished",
 
@@ -113,30 +114,29 @@ export function useAddOffer() {
   });
 
   const [errors, setErrors] = useState({});
-  const [createOffer] = useCreateOfferMutation();
-
+  const [createOffer, { isLoading ,isSuccess }] = useCreateOfferMutation();
   // 🔹 handle change
-const handleChange = (field) => (e) => {
-  const value = e.target.value;
+  const handleChange = (field) => (e) => {
+    const value = e.target.value;
 
-  // لو الحقل nested مثل price.minSYP
-  if (field.includes(".")) {
-    const [parent, child] = field.split(".");
+    // لو الحقل nested مثل price.minSYP
+    if (field.includes(".")) {
+      const [parent, child] = field.split(".");
 
-    setFormData((prev) => ({
-      ...prev,
-      [parent]: {
-        ...prev[parent],
-        [child]: value === "" ? "" : Number(value),
-      },
-    }));
-  } else {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  }
-};
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value === "" ? "" : Number(value),
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
+  };
 
   const handleFeature = (key) => {
     setFeatures((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -156,7 +156,8 @@ const handleChange = (field) => (e) => {
 
       // ✅ إصلاح rooms
       rooms: Number(formData.bedrooms) || 0,
-
+      offerNumber: formData.offerNumber || undefined,
+      staffParcode: formData.staffParcode || undefined,
       // ✅ تحويل الأرقام
       totalSpace: Number(formData.totalSpace) || 0,
       builtArea: Number(formData.builtArea) || 0,
@@ -168,7 +169,8 @@ const handleChange = (field) => (e) => {
       totalFloors: formData.totalFloors ? Number(formData.totalFloors) : null,
 
       yearBuilt: formData.yearBuilt ? Number(formData.yearBuilt) : null,
-
+      OwnershipType: formData.OwnershipType ? formData.OwnershipType : null,
+      propertyCondition: formData.propertyCondition,
       downPayment: Number(formData.downPayment) || 0,
       installmentMonths: Number(formData.installmentMonths) || 0,
 
@@ -189,7 +191,7 @@ const handleChange = (field) => (e) => {
       },
 
       // ✅ features
-      features: features,
+      // features: features,
 
       // ❌ حذف UI فقط
       bedrooms: undefined,
@@ -198,7 +200,7 @@ const handleChange = (field) => (e) => {
 
   const handleSubmit = async () => {
     const payload = buildPayload();
-console.log(payload);
+    console.log(payload);
 
     const form = new FormData();
 
@@ -258,7 +260,8 @@ console.log(payload);
     features,
     files,
     errors,
-
+    isLoading,
+    isSuccess,
     setFiles,
     handleChange,
     handleFeature,

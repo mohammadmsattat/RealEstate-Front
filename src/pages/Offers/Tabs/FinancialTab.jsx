@@ -4,36 +4,25 @@ import Select from "@/components/ui/Select";
 
 export default function FinancialTab({
   formData,
-  setFormData,
   handleChange,
   t,
 }) {
-  const updatePrice = (key, value) => {
-    console.log(key);
-    console.log(value);
-
-    setFormData((prev) => ({
-      ...prev,
-      price: {
-        ...prev.price,
-        [key]: value === "" ? "" : Number(value),
-      },
-    }));
-  };
-
   return (
     <TabPanel>
       <div className="grid md:grid-cols-2 gap-4">
+
         {/* PRICE RANGE - SYP */}
         <Textinput
-          label="Min Price (SYP)"
+          label={t("addOfferPage.priceMinSYP")}
+          placeholder={t("addOfferPage.placeholders.priceMinSYP")}
           type="number"
           value={formData.price?.minSYP || ""}
           onChange={handleChange("price.minSYP")}
         />
 
         <Textinput
-          label="Max Price (SYP)"
+          label={t("addOfferPage.priceMaxSYP")}
+          placeholder={t("addOfferPage.placeholders.priceMaxSYP")}
           type="number"
           value={formData.price?.maxSYP || ""}
           onChange={handleChange("price.maxSYP")}
@@ -41,29 +30,33 @@ export default function FinancialTab({
 
         {/* PRICE RANGE - USD */}
         <Textinput
-          label="Min Price (USD)"
+          label={t("addOfferPage.priceMinUSD")}
+          placeholder={t("addOfferPage.placeholders.priceMinUSD")}
           type="number"
           value={formData.price?.minUSD || ""}
           onChange={handleChange("price.minUSD")}
         />
 
         <Textinput
-          label="Max Price (USD)"
+          label={t("addOfferPage.priceMaxUSD")}
+          placeholder={t("addOfferPage.placeholders.priceMaxUSD")}
           type="number"
           value={formData.price?.maxUSD || ""}
           onChange={handleChange("price.maxUSD")}
         />
 
-        {/* PRICE PER METER RANGE ✔ الصحيح */}
+        {/* PRICE PER METER */}
         <Textinput
-          label="Price Per Meter (From)"
+          label={t("addOfferPage.pricePerMeterFrom")}
+          placeholder={t("addOfferPage.placeholders.pricePerMeterFrom")}
           type="number"
           value={formData.pricePerMeterFrom || ""}
           onChange={handleChange("pricePerMeterFrom")}
         />
 
         <Textinput
-          label="Price Per Meter (To)"
+          label={t("addOfferPage.pricePerMeterTo")}
+          placeholder={t("addOfferPage.placeholders.pricePerMeterTo")}
           type="number"
           value={formData.pricePerMeterTo || ""}
           onChange={handleChange("pricePerMeterTo")}
@@ -74,9 +67,11 @@ export default function FinancialTab({
           label={t("addOfferPage.paymentMethod")}
           value={formData.paymentType}
           options={[
-            { label: "Cash", value: "cash" },
-            { label: "Installment", value: "installment" },
-            { label: "All", value: "all" },
+            { label: t("addOfferPage.select.payment.cash"), value: "cash" },
+            {
+              label: t("addOfferPage.select.payment.installment"),
+              value: "installment",
+            },
           ]}
           onChange={handleChange("paymentType")}
         />
@@ -84,6 +79,7 @@ export default function FinancialTab({
         {/* DOWN PAYMENT */}
         <Textinput
           label={t("addOfferPage.downPayment")}
+          placeholder={t("addOfferPage.placeholders.downPayment")}
           type="number"
           value={formData.downPayment || ""}
           onChange={handleChange("downPayment")}
@@ -92,6 +88,7 @@ export default function FinancialTab({
         {/* INSTALLMENT MONTHS */}
         <Textinput
           label={t("addOfferPage.installmentMonths")}
+          placeholder={t("addOfferPage.placeholders.installmentMonths")}
           type="number"
           value={formData.installmentMonths || ""}
           onChange={handleChange("installmentMonths")}
@@ -101,9 +98,11 @@ export default function FinancialTab({
         <Textinput
           type="date"
           label={t("addOfferPage.closedDate")}
+          placeholder={t("addOfferPage.placeholders.closedDate")}
           value={formData.closedDate || ""}
           onChange={handleChange("closedDate")}
         />
+
       </div>
     </TabPanel>
   );

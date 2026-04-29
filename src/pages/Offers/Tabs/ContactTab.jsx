@@ -39,7 +39,7 @@ export default function ContactTab({ formData, handleChange ,t }) {
               <Textinput
                 label={t("addOfferPage.PropertyPartner")}
                 placeholder={t("addOfferPage.placeholders.PropertyPartner")}
-                value={formData.ownerNumber}
+                value={formData.partnership}
                 onChange={handleChange("partnership")}
               />
             </div>

@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
+import Modal from "@/components/ui/Modal";
+
 import {
   useGetOffersQuery,
   useDeleteOfferMutation,
@@ -14,6 +16,8 @@ import { MenuItem } from "@headlessui/react";
 import ListLoading from "@/components/skeleton/ListLoading";
 import DeleteModal from "@/components/DeleteModal";
 import { useTranslation } from "react-i18next";
+import Textinput from "@/components/ui/Textinput";
+import Select from "@/components/ui/Select";
 
 const actions = [
   { name: "view", icon: "heroicons-outline:eye" },
@@ -29,9 +33,35 @@ const getOperationTypeLabel = (t, value) =>
 
 const OffersPage = () => {
   const { t } = useTranslation();
-  const { data, error, isLoading, isSuccess, refetch } = useGetOffersQuery();
+  const [appliedFilters, setAppliedFilters] = useState({});
+  const normalizeFilters = (f) => ({
+    keyword: f.keyword || undefined,
+    processType: f.processType || undefined,
+    estateType: f.estateType || undefined,
+    city: f.city || undefined,
+    bedrooms: f.bedrooms ? Number(f.bedrooms) : undefined,
+    minPrice: f.minPrice ? Number(f.minPrice) : undefined,
+    maxPrice: f.maxPrice ? Number(f.maxPrice) : undefined,
+  });
+  const normalizedFilters = normalizeFilters(appliedFilters);
+
+  const { data, error, isLoading, isSuccess, refetch } =
+    useGetOffersQuery(normalizedFilters);
   const navigate = useNavigate();
-console.log(data);
+  console.log(data);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  const initialFilters = {
+    keyword: "",
+    processType: "",
+    estateType: "",
+    city: "",
+    bedrooms: "",
+    minPrice: "",
+    maxPrice: "",
+  };
+
+  const [filters, setFilters] = useState(initialFilters);
 
   const [
     deleteOffer,
@@ -52,7 +82,19 @@ console.log(data);
     if (isSuccess) console.log("Offers Data:", data);
     if (error) console.log("Offers error:", error);
   }, [data, isSuccess, error]);
+  const handleFilterChange = (field, value) => {
+    setFilters((prev) => ({ ...prev, [field]: value }));
+  };
 
+  const applySearchFilters = () => {
+    setAppliedFilters(filters);
+    setIsFilterModalOpen(false);
+  };
+
+  const resetFilters = () => {
+    setFilters(initialFilters);
+    setAppliedFilters({});
+  };
   const handleDelete = async () => {
     try {
       if (selectedRows.length > 0) {
@@ -130,7 +172,7 @@ console.log(data);
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={25}
-              height={25} 
+              height={25}
               viewBox="0 0 100 100"
             >
               <path
@@ -233,6 +275,11 @@ console.log(data);
             className="btn-dark"
             onClick={() => navigate("/offers/add")}
           />
+          <Button
+            text={t("offersControlPage.filters")}
+            className="btn-dark"
+            onClick={() => setIsFilterModalOpen(true)}
+          />
           {selectedRows.length > 0 && (
             <Button
               text={t("offersPage.deleteSelected")}
@@ -301,7 +348,82 @@ console.log(data);
           </button>
         </div>
       </div>
+      <Modal
+        title={t("offersControlPage.filters")}
+        activeModal={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+      >
+        <div className="space-y-3">
+          <Textinput
+            label={t("offersControlPage.keyword")}
+            value={filters.keyword}
+            onChange={(e) => handleFilterChange("keyword", e.target.value)}
+          />
 
+          <Select
+            label={t("offersControlPage.processType")}
+            options={[
+              { label: t("offersControlPage.select.sale"), value: "sale" },
+              { label: t("offersControlPage.select.rent"), value: "rent" },
+            ]}
+            value={filters.processType}
+            onChange={(e) => handleFilterChange("processType", e.target.value)}
+          />
+
+          <Select
+            label={t("offersControlPage.estateType")}
+            options={["house", "villa", "land", "farm", "servicedPlot"].map(
+              (pt) => ({
+                label: t(`addOfferPage.select.property.${pt}`),
+                value: pt,
+              }),
+            )}
+            value={filters.estateType}
+            onChange={(e) => handleFilterChange("estateType", e.target.value)}
+          />
+
+          <Textinput
+            label={t("offersControlPage.city")}
+            value={filters.city}
+            onChange={(e) => handleFilterChange("city", e.target.value)}
+          />
+
+          <Textinput
+            label={t("offersControlPage.bedrooms")}
+            type="number"
+            value={filters.bedrooms}
+            onChange={(e) => handleFilterChange("bedrooms", e.target.value)}
+          />
+
+          <div className="flex gap-2">
+            <Textinput
+              placeholder={t("offersControlPage.minPrice")}
+              type="number"
+              value={filters.minPrice}
+              onChange={(e) => handleFilterChange("minPrice", e.target.value)}
+            />
+            <Textinput
+              placeholder={t("offersControlPage.maxPrice")}
+              type="number"
+              value={filters.maxPrice}
+              onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
+            />
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <Button
+              text={t("offersControlPage.reset")}
+              className="btn-secondary w-full"
+              onClick={resetFilters}
+            />
+            <Button
+              text={t("offersControlPage.applyFilters")}
+              className="btn-dark w-full"
+              onClick={applySearchFilters}
+            />
+          </div>
+        </div>
+      </Modal>
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={() => {

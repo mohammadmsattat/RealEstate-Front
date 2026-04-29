@@ -14,18 +14,19 @@ export function useEditOffer() {
 
   const [isMapOpen, setIsMapOpen] = useState(false);
 
-  const openMapModal = () => setIsMapOpen(true);
-  const closeMapModal = () => setIsMapOpen(false);
-
   const { data, isLoading } = useGetOfferByIdQuery(id);
-  const [updateOffer] = useUpdateOfferMutation();
+  const [updateOffer, { isLoading: isUpdating, isSuccess }] =
+    useUpdateOfferMutation();
 
+  // ================= FULL FORM STATE (MATCH ADD HOOK) =================
   const [formData, setFormData] = useState({
     title: "",
     code: "",
     description: "",
     processType: "sale",
     estateType: "house",
+    offerNumber: "",
+    staffParcode: "",
     city: "",
     neighborhood: "",
     address: "",
@@ -33,10 +34,13 @@ export function useEditOffer() {
     totalSpace: "",
     builtArea: "",
     landArea: "",
-    bedrooms: "",
+
+    rooms: "",
     bathrooms: "",
     floorNumber: "",
     totalFloors: "",
+
+    OwnershipType: "",
 
     price: {
       minSYP: "",
@@ -53,7 +57,7 @@ export function useEditOffer() {
     downPayment: "",
     installmentMonths: "",
 
-    propertyCondition: "good",
+    propertyCondition: "",
     yearBuilt: "",
     furnishingStatus: "unfurnished",
 
@@ -63,14 +67,58 @@ export function useEditOffer() {
 
     ownerName: "",
     ownerNumber: "",
+    partnership: "",
 
-    location: { lat: "", lng: "" },
+    location: {
+      lat: "",
+      lng: "",
+    },
+
+    areaUnit: "sqm",
+
+    isNegotiable: false,
+    shortDescription: "",
+
+    videoUrl: "",
+    virtualTourUrl: "",
 
     listingExpiryDate: "",
     closedDate: "",
+
+    nearbyPlaces: {
+      schools: 0,
+      hospitals: 0,
+      malls: 0,
+      restaurants: 0,
+      metro: 0,
+    },
+
+    directions: [],
+    facade: "",
+    recordNumber: "",
+    parcelNumber: "",
+    roofPriority: "",
   });
 
-  const [features, setFeatures] = useState({});
+  const [features, setFeatures] = useState({
+    hasBalcony: false,
+    hasPool: false,
+    hasGarage: false,
+    hasAC: false,
+    hasSecurity: false,
+    hasGarden: false,
+    hasParking: false,
+    hasStorage: false,
+    hasHeating: false,
+    hasFurnished: false,
+    hasJacuzzi: false,
+    hasSauna: false,
+    hasGym: false,
+    hasSeaView: false,
+    hasLandmarkView: false,
+    isPetFriendly: false,
+  });
+
   const [files, setFiles] = useState({
     mainImage: null,
     images: [],
@@ -78,12 +126,10 @@ export function useEditOffer() {
     videoFiles: [],
   });
 
-  // ================= helpers =================
+  // ================= HELPERS =================
   const clean = (v) => (v === null || v === undefined ? "" : v);
 
-  const isValid = (v) => v !== "" && v !== null && v !== undefined;
-
-  // ================= fill data =================
+  // ================= FILL DATA FROM API =================
   useEffect(() => {
     if (!data?.data) return;
 
@@ -95,6 +141,7 @@ export function useEditOffer() {
       description: clean(offer.description),
       processType: clean(offer.processType) || "sale",
       estateType: clean(offer.estateType) || "house",
+
       city: clean(offer.city),
       neighborhood: clean(offer.neighborhood),
       address: clean(offer.address),
@@ -102,10 +149,14 @@ export function useEditOffer() {
       totalSpace: clean(offer.totalSpace),
       builtArea: clean(offer.builtArea),
       landArea: clean(offer.landArea),
-      bedrooms: clean(offer.bedrooms),
+      offerNumber: clean(offer.offerNumber),
+      staffParcode: clean(offer.staffParcode),
+      rooms: clean(offer.rooms),
       bathrooms: clean(offer.bathrooms),
       floorNumber: clean(offer.floorNumber),
       totalFloors: clean(offer.totalFloors),
+
+      OwnershipType: clean(offer.OwnershipType),
 
       price: {
         minSYP: offer.price?.minSYP ?? "",
@@ -122,7 +173,7 @@ export function useEditOffer() {
       downPayment: clean(offer.downPayment),
       installmentMonths: clean(offer.installmentMonths),
 
-      propertyCondition: clean(offer.propertyCondition) || "good",
+      propertyCondition: clean(offer.propertyCondition),
       yearBuilt: clean(offer.yearBuilt),
       furnishingStatus: clean(offer.furnishingStatus) || "unfurnished",
 
@@ -132,24 +183,51 @@ export function useEditOffer() {
 
       ownerName: clean(offer.ownerName),
       ownerNumber: clean(offer.ownerNumber),
+      partnership: clean(offer.partnership),
 
       location: {
         lat: offer.location?.lat ?? "",
         lng: offer.location?.lng ?? "",
       },
 
+      areaUnit: clean(offer.areaUnit) || "sqm",
+      isNegotiable: offer.isNegotiable ?? false,
+      shortDescription: clean(offer.shortDescription),
+
+      videoUrl: clean(offer.videoUrl),
+      virtualTourUrl: clean(offer.virtualTourUrl),
+
       listingExpiryDate: clean(offer.listingExpiryDate),
-      closedDate: clean(offer.closedDate),
+      closedDate: clean(
+        offer.closedDate
+          ? new Date(offer.closedDate).toISOString().split("T")[0]
+          : "",
+      ),
+
+      nearbyPlaces: {
+        schools: offer.nearbyPlaces?.schools ?? 0,
+        hospitals: offer.nearbyPlaces?.hospitals ?? 0,
+        malls: offer.nearbyPlaces?.malls ?? 0,
+        restaurants: offer.nearbyPlaces?.restaurants ?? 0,
+        metro: offer.nearbyPlaces?.metro ?? 0,
+      },
+
+      directions: Array.isArray(offer.directions?.[0])
+        ? offer.directions.flat()
+        : offer.directions || [],
+      facade: clean(offer.facade),
+      recordNumber: clean(offer.recordNumber),
+      parcelNumber: clean(offer.parcelNumber),
+      roofPriority: clean(offer.roofPriority),
     });
 
     setFeatures(offer.features || {});
   }, [data]);
 
-  // ================= handlers =================
+  // ================= HANDLERS =================
   const handleChange = (field) => (e) => {
     const value = e.target.value;
 
-    // دعم nested مثل price.minSYP
     if (field.includes(".")) {
       const [parent, child] = field.split(".");
 
@@ -185,7 +263,7 @@ export function useEditOffer() {
     }));
   };
 
-  // ================= submit =================
+  // ================= SUBMIT =================
   const handleSubmit = async () => {
     const form = new FormData();
 
@@ -205,17 +283,34 @@ export function useEditOffer() {
         return;
       }
 
-      if (isValid(value)) {
+      if (key === "nearbyPlaces") {
+        Object.keys(value).forEach((n) => {
+          form.append(`nearbyPlaces[${n}]`, value[n]);
+        });
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((v) => form.append(key, v));
+        return;
+      }
+
+      if (typeof value === "object") {
+        Object.keys(value).forEach((k) => {
+          form.append(`${key}[${k}]`, value[k]);
+        });
+        return;
+      }
+
+      if (value !== "" && value !== null && value !== undefined) {
         form.append(key, value);
       }
     });
 
-    // features
     Object.keys(features).forEach((key) => {
       form.append(`features[${key}]`, String(features[key]));
     });
 
-    // files
     if (files.mainImage) form.append("mainImage", files.mainImage);
     files.images.forEach((f) => form.append("images", f));
     files.files.forEach((f) => form.append("files", f));
@@ -237,6 +332,8 @@ export function useEditOffer() {
     features,
     files,
     isLoading,
+    isSuccess,
+    isUpdating,
     handleChange,
     handleFeature,
     setFiles,
@@ -244,7 +341,7 @@ export function useEditOffer() {
     handleSubmit,
     isMapOpen,
     setIsMapOpen,
-    openMapModal,
-    closeMapModal,
+    openMapModal: () => setIsMapOpen(true),
+    closeMapModal: () => setIsMapOpen(false),
   };
 }

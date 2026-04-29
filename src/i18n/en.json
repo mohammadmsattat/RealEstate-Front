@@ -52,6 +52,23 @@
       "media": "Media",
       "contact": "Contact Info"
     },
+    "offerNumber": "Offer Number",
+    "staffBarcode": "Staff Barcode",
+    "facade": "Facade",
+    "propertyCondition": "Property Condition",
+    "ownershipType": "Ownership Type",
+    "directions": "Directions",
+    "features": "Features",
+    "yearBuilt": "Year Built",
+    "recordNumber": "Record Number",
+    "parcelNumber": "Parcel Number",
+
+    "priceMinSYP": "Min Price (SYP)",
+    "priceMaxSYP": "Max Price (SYP)",
+    "priceMinUSD": "Min Price (USD)",
+    "priceMaxUSD": "Max Price (USD)",
+    "pricePerMeterFrom": "Price per Meter (From)",
+    "pricePerMeterTo": "Price per Meter (To)",
     "propertyCode": "Property Code",
     "operationType": "Operation Type",
     "propertyType": "Property Type",
@@ -86,6 +103,17 @@
     "ownerNumber": "Enter owner phone",
     "PropertyPartner": "Property Partner",
     "roofPriority": "Roof Priority",
+    "direction": {
+      "label": "Direction",
+      "north": "North",
+      "south": "South",
+      "east": "East",
+      "west": "West",
+      "northeast": "Northeast",
+      "northwest": "Northwest",
+      "southeast": "Southeast",
+      "southwest": "Southwest"
+    },
     "images": {
       "mainImage": "Main Image",
       "images": "Images"
@@ -103,7 +131,9 @@
       "property": {
         "house": "House",
         "villa": "Villa",
-        "land": "Land"
+        "land": "Land",
+        "farm": "Farm",
+        "servicedPlot": "Serviced Plot"
       },
       "payment": {
         "cash": "Cash",
@@ -111,6 +141,8 @@
       }
     },
     "placeholders": {
+      "offerNumber": "Enter offer number",
+      "staffBarcode": "Enter staff barcode",
       "title": "Enter property title",
       "code": "Enter property code",
       "description": "Write property description",
@@ -138,7 +170,23 @@
       "ownerName": "Enter owner name",
       "ownerNumber": "Enter owner phone",
       "PropertyPartner": "Enter Property Partner",
-      "roofPriority": "Enter Roof Priority"
+      "roofPriority": "Enter Roof Priority",
+
+      "priceMinSYP": "Enter minimum price (SYP)",
+      "priceMaxSYP": "Enter maximum price (SYP)",
+      "priceMinUSD": "Enter minimum price (USD)",
+      "priceMaxUSD": "Enter maximum price (USD)",
+
+      "pricePerMeterFrom": "Enter minimum price per meter",
+      "pricePerMeterTo": "Enter maximum price per meter",
+
+      "facade": "Enter facade",
+      "propertyCondition": "Enter property condition",
+      "ownershipType": "Enter ownership type",
+
+      "yearBuilt": "Enter year built",
+      "recordNumber": "Enter record number",
+      "parcelNumber": "Enter parcel number"
     }
   },
   "mapModal": {
@@ -150,7 +198,9 @@
     "description": "Description",
     "details": "Property Details",
     "features": "Features",
-    "contact": "Contact Info"
+    "contact": "Contact Info",
+    "createdAt": "Created At",
+    "lastModified": "Last Modified"
   },
   "common": {
     "loading": "Loading...",

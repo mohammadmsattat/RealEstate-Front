@@ -23,7 +23,6 @@ const Textarea = ({
   onChange,
   ...rest
 }) => {
-  console.log(value);
   
   return (
     <div

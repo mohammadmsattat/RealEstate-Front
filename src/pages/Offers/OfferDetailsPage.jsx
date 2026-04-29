@@ -21,9 +21,10 @@ const OfferDetailsPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { t } = useTranslation();
-
   const { data, isLoading } = useGetOfferByIdQuery(id);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  console.log(data);
 
   if (isLoading)
     return (
@@ -36,6 +37,7 @@ const OfferDetailsPage = () => {
     );
 
   const offer = data?.data;
+
   if (!offer) return <div className="p-6">{t("common.noData")}</div>;
 
   const media = [
@@ -123,23 +125,45 @@ const OfferDetailsPage = () => {
           <div className="grid grid-cols-2 gap-3">
             <InfoItem
               icon="heroicons-outline:home"
-              label="Type"
+              label="النوع"
               value={offer.estateType}
             />
             <InfoItem
               icon="heroicons-outline:switch-horizontal"
-              label="Process"
+              label="نوع العملية"
               value={offer.processType}
             />
             <InfoItem
               icon="heroicons-outline:credit-card"
-              label="Payment"
+              label="الدفع"
               value={offer.paymentType}
             />
             <InfoItem
               icon="heroicons-outline:hashtag"
-              label="Code"
+              label="الكود"
               value={offer.code}
+            />
+          </div>
+
+          {/* DATES */}
+          <div className="grid grid-cols-1 gap-3 pt-2 border-t">
+            <InfoItem
+              icon="heroicons-outline:calendar"
+              label="تاريخ الإنشاء"
+              value={
+                offer.createdAt
+                  ? new Date(offer.createdAt).toLocaleString()
+                  : "-"
+              }
+            />
+            <InfoItem
+              icon="heroicons-outline:refresh"
+              label="آخر تعديل"
+              value={
+                offer.updatedAt
+                  ? new Date(offer.updatedAt).toLocaleString()
+                  : "-"
+              }
             />
           </div>
         </div>
@@ -157,53 +181,57 @@ const OfferDetailsPage = () => {
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:arrows-expand"
-            label="Total Space"
+            label="المساحة الكلية"
             value={offer.totalSpace}
           />
           <InfoItem
             icon="heroicons-outline:office-building"
-            label="Built Area"
+            label="المساحة المبنية"
             value={offer.builtArea}
           />
           <InfoItem
             icon="heroicons-outline:map"
-            label="Land Area"
+            label="مساحة الأرض"
             value={offer.landArea}
           />
           <InfoItem
             icon="heroicons-outline:bed"
-            label="Rooms"
+            label="الغرف"
             value={offer.rooms}
           />
           <InfoItem
             icon="heroicons-outline:beaker"
-            label="Bathrooms"
+            label="الحمامات"
             value={offer.bathrooms}
           />
           <InfoItem
             icon="heroicons-outline:layers"
-            label="Floor"
+            label="الطابق"
             value={offer.floorNumber}
           />
-
           <InfoItem
             icon="heroicons-outline:collection"
-            label="Total Floors"
+            label="إجمالي الطوابق"
             value={offer.totalFloors}
           />
           <InfoItem
             icon="heroicons-outline:calendar"
-            label="Year Built"
+            label="نوع الملكية"
+            value={offer.OwnershipType}
+          />
+          <InfoItem
+            icon="heroicons-outline:calendar"
+            label="سنة البناء"
             value={offer.yearBuilt}
           />
           <InfoItem
             icon="heroicons-outline:office-building"
-            label="Condition"
+            label="الحالة"
             value={offer.propertyCondition}
           />
           <InfoItem
             icon="heroicons-outline:arrow-right"
-            label="Facade"
+            label="الواجهة"
             value={offer.facade}
           />
         </div>
@@ -214,30 +242,29 @@ const OfferDetailsPage = () => {
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:calculator"
-            label="Price SYP"
+            label="السعر (ل.س)"
             value={`${offer.price?.minSYP || 0} - ${offer.price?.maxSYP || 0}`}
           />
-
           <InfoItem
             icon="heroicons-outline:currency-dollar"
-            label="Price USD"
+            label="السعر (USD)"
             value={`${offer.price?.minUSD || 0} - ${offer.price?.maxUSD || 0}`}
           />
-
           <InfoItem
             icon="heroicons-outline:chart-bar"
-            label="Price / Meter"
-            value={`${offer.pricePerMeterFrom || 0} - ${offer.pricePerMeterTo || 0}`}
+            label="سعر المتر"
+            value={`${offer.pricePerMeterFrom || 0} - ${
+              offer.pricePerMeterTo || 0
+            }`}
           />
-
           <InfoItem
             icon="heroicons-outline:cash"
-            label="Down Payment"
+            label="الدفعة الأولى"
             value={offer.downPayment}
           />
           <InfoItem
             icon="heroicons-outline:calendar"
-            label="Installments"
+            label="أشهر التقسيط"
             value={offer.installmentMonths}
           />
         </div>
@@ -248,66 +275,55 @@ const OfferDetailsPage = () => {
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:user"
-            label="Agent Name"
+            label="اسم الوكيل"
             value={offer.agentName}
           />
           <InfoItem
             icon="heroicons-outline:phone"
-            label="Phone"
+            label="رقم الهاتف"
             value={offer.agentPhone}
           />
-
           <InfoItem
             icon="heroicons-outline:user-circle"
-            label="Owner"
+            label="اسم المالك"
             value={offer.ownerName}
           />
           <InfoItem
             icon="heroicons-outline:phone"
-            label="Owner Phone"
+            label="هاتف المالك"
             value={offer.ownerNumber}
           />
           <InfoItem
             icon="heroicons-outline:link"
-            label="Partnership"
+            label="الشراكة"
             value={offer.partnership}
           />
         </div>
       </Card>
 
       {/* LOCATION */}
-      <Card title="Location">
+      <Card title="الموقع">
         <div className="grid md:grid-cols-2 gap-3">
           <InfoItem
             icon="heroicons-outline:location-marker"
-            label="City"
+            label="المدينة"
             value={offer.city}
           />
           <InfoItem
             icon="heroicons-outline:map"
-            label="Neighborhood"
+            label="الحي"
             value={offer.neighborhood}
           />
           <InfoItem
             icon="heroicons-outline:location-marker"
-            label="Address"
+            label="العنوان"
             value={offer.address}
-          />
-          <InfoItem
-            icon="heroicons-outline:globe"
-            label="Lat"
-            value={offer.location?.lat}
-          />
-          <InfoItem
-            icon="heroicons-outline:globe"
-            label="Lng"
-            value={offer.location?.lng}
           />
         </div>
       </Card>
 
       {/* DIRECTIONS */}
-      <Card title="Directions">
+      <Card title="الاتجاهات">
         <div className="flex gap-2 flex-wrap">
           {offer.directions?.length
             ? offer.directions.map((d, i) => (

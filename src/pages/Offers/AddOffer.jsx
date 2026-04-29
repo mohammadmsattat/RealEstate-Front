@@ -17,6 +17,8 @@ export default function AddOfferPage() {
     setLatLng,
     handleSubmit,
     isMapOpen,
+    isLoading,
+    isSuccess,
     openMapModal,
     closeMapModal,
   } = useAddOffer();
@@ -30,6 +32,8 @@ export default function AddOfferPage() {
             text={t("addOfferPage.actions.save")}
             className="btn-dark w-full"
             onClick={handleSubmit}
+            isLoading={isLoading || isSuccess}
+            disabled={isLoading || isSuccess}
           />
         }
       >
