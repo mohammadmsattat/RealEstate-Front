@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Icon from "@/components/ui/Icon";
 import Cleave from "cleave.js/react";
 import "cleave.js/dist/addons/cleave-phone.us";
+
 const Textinput = ({
   type,
   label,
@@ -27,7 +28,8 @@ const Textinput = ({
   options,
   onFocus,
   defaultValue,
-
+  min,
+  max,
   ...rest
 }) => {
   const [open, setOpen] = useState(false);
@@ -51,12 +53,14 @@ const Textinput = ({
           {label}
         </label>
       )}
+
       <div className={`relative ${horizontal ? "flex-1" : ""}`}>
         {name && !isMask && (
           <input
             type={type === "password" && open === true ? "text" : type}
-            // {...register(name)}
             {...rest}
+            min={type === "number" ? min : undefined}
+            max={type === "number" ? max : undefined}
             className={`${
               error ? " has-error" : " "
             } form-control py-2 ${className}  `}
@@ -68,6 +72,7 @@ const Textinput = ({
             onChange={onChange}
           />
         )}
+
         {!name && !isMask && (
           <input
             type={type === "password" && open === true ? "text" : type}
@@ -78,8 +83,11 @@ const Textinput = ({
             value={value}
             onChange={onChange}
             id={id}
+            min={type === "number" ? min : undefined}
+            max={type === "number" ? max : undefined}
           />
         )}
+
         {name && isMask && (
           <Cleave
             {...register(name)}
@@ -94,8 +102,11 @@ const Textinput = ({
             readOnly={readonly}
             disabled={disabled}
             onChange={onChange}
+            min={type === "number" ? min : undefined}
+            max={type === "number" ? max : undefined}
           />
         )}
+
         {!name && isMask && (
           <Cleave
             placeholder={placeholder}
@@ -108,8 +119,11 @@ const Textinput = ({
             readOnly={readonly}
             disabled={disabled}
             onChange={onChange}
+            min={type === "number" ? min : undefined}
+            max={type === "number" ? max : undefined}
           />
         )}
+
         {/* icon */}
         <div className="flex text-xl absolute ltr:right-[14px] rtl:left-[14px] top-1/2 -translate-y-1/2  space-x-1 rtl:space-x-reverse">
           {hasicon && (
@@ -131,6 +145,7 @@ const Textinput = ({
               <Icon icon="heroicons-outline:information-circle" />
             </span>
           )}
+
           {validate && (
             <span className="text-success-500">
               <Icon icon="bi:check-lg" />
@@ -138,7 +153,8 @@ const Textinput = ({
           )}
         </div>
       </div>
-      {/* error and success message*/}
+
+      {/* error message */}
       {error && (
         <div
           className={` mt-2 ${
@@ -150,7 +166,8 @@ const Textinput = ({
           {error.message}
         </div>
       )}
-      {/* validated and success message*/}
+
+      {/* success message */}
       {validate && (
         <div
           className={` mt-2 ${
@@ -162,7 +179,8 @@ const Textinput = ({
           {validate}
         </div>
       )}
-      {/* only description */}
+
+      {/* description */}
       {description && <span className="input-description">{description}</span>}
     </div>
   );

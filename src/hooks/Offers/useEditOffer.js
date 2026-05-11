@@ -125,6 +125,7 @@ export function useEditOffer() {
     files: [],
     videoFiles: [],
   });
+  const [errors, setErrors] = useState({});
 
   // ================= HELPERS =================
   const clean = (v) => (v === null || v === undefined ? "" : v);
@@ -262,9 +263,67 @@ export function useEditOffer() {
       },
     }));
   };
+  const validateRequiredFields = () => {
+    const newErrors = {};
 
+    const requiredFields = [
+      {
+        key: "city",
+        value: formData.city,
+        label: t("validation.fields.city"),
+      },
+
+      {
+        key: "processType",
+        value: formData.processType,
+        label: t("validation.fields.operationType"),
+      },
+      {
+        key: "estateType",
+        value: formData.estateType,
+        label: t("validation.fields.estateType"),
+      },
+
+      {
+        key: "code",
+        value: formData.code,
+        label: t("validation.fields.code"),
+      },
+
+      {
+        key: "map",
+        value: formData.location.lat && formData.location.lng,
+        label: t("validation.fields.map"),
+      },
+    ];
+
+    for (const field of requiredFields) {
+      const isEmpty =
+        field.value === undefined || field.value === null || field.value === "";
+
+      if (isEmpty) {
+        newErrors[field.key] = t("validation.required", {
+          field: field.label,
+        });
+      }
+    }
+
+    setErrors(newErrors);
+
+    // أول خطأ فقط toast
+    const firstError = Object.values(newErrors)[0];
+
+    if (firstError) {
+      toast.error(firstError);
+      return false;
+    }
+
+    return true;
+  };
   // ================= SUBMIT =================
   const handleSubmit = async () => {
+    if (!validateRequiredFields()) return;
+
     const form = new FormData();
 
     Object.keys(formData).forEach((key) => {
@@ -340,6 +399,7 @@ export function useEditOffer() {
     setLatLng,
     handleSubmit,
     isMapOpen,
+    errors,
     setIsMapOpen,
     openMapModal: () => setIsMapOpen(true),
     closeMapModal: () => setIsMapOpen(false),

@@ -11,6 +11,7 @@ export const useAddRequest = () => {
   const closeMapModal = () => setIsMapOpen(false);
 
   const [formData, setFormData] = useState({
+    requestNumber: "",
     customer: {
       name: "",
       email: "",
@@ -64,58 +65,126 @@ export const useAddRequest = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.customer.name) newErrors.name = "Customer name is required";
+    const requiredFields = [
+      {
+        key: "requestNumber",
+        value: formData.requestNumber,
+        label: "Request Number",
+      },
 
-    if (!formData.customer.phone) newErrors.phone = "Phone is required";
+      {
+        key: "estateTypes",
+        value: formData.requirements.estateTypes?.length > 0,
+        label: "Property Type",
+      },
 
-    if (!formData.requirements.processType)
-      newErrors.processType = "Process type required";
+      {
+        key: "processType",
+        value: formData.requirements.processType,
+        label: "Operation Type",
+      },
+
+      {
+        key: "city",
+        value: formData.requirements.city,
+        label: "City",
+      },
+    ];
+
+    for (const field of requiredFields) {
+      const isEmpty =
+        field.value === undefined ||
+        field.value === null ||
+        field.value === "" ||
+        field.value === false;
+
+      if (isEmpty) {
+        newErrors[field.key] = `${field.label} is required`;
+      }
+    }
 
     setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0;
+    const firstError = Object.values(newErrors)[0];
+
+    if (firstError) {
+      toast.error(firstError);
+      return false;
+    }
+
+    return true;
   };
 
   // ===== SUBMIT (same style as Offers) =====
-  const handleSubmit = async () => {
-    // if (!validate()) return;
+ const handleSubmit = async () => {
+  if (!validate()) return;
 
-    const payload = new FormData();
+  // ✅ إرسال JSON عادي بدل FormData
+  const payload = {
+    requestNumber: formData.requestNumber,
 
-    // customer
-    Object.keys(formData.customer).forEach((key) => {
-      payload.append(`customer[${key}]`, formData.customer[key]);
-    });
+    customer: {
+      ...formData.customer,
+    },
 
-    // requirements (nested)
-    Object.keys(formData.requirements).forEach((key) => {
-      if (key === "price") {
-        Object.keys(formData.requirements.price).forEach((p) => {
-          payload.append(
-            `requirements[price][${p}]`,
-            formData.requirements.price[p],
-          );
-        });
-      } else if (Array.isArray(formData.requirements[key])) {
-        formData.requirements[key].forEach((val) => {
-          payload.append(`requirements[${key}][]`, val);
-        });
-      } else {
-        payload.append(`requirements[${key}]`, formData.requirements[key]);
-      }
-    });
+    requirements: {
+      ...formData.requirements,
 
-    try {
-      await createRequest(formData).unwrap();
-      toast.success("Request created successfully");
-      setTimeout(() => {
-        navigation("/Requests");
-      },  0);
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to create request");
-    }
+      // تنظيف وتحويل بعض القيم
+      minRooms: formData.requirements.minRooms
+        ? Number(formData.requirements.minRooms)
+        : null,
+
+      maxRooms: formData.requirements.maxRooms
+        ? Number(formData.requirements.maxRooms)
+        : null,
+
+      minSpace: formData.requirements.minSpace
+        ? Number(formData.requirements.minSpace)
+        : null,
+
+      maxSpace: formData.requirements.maxSpace
+        ? Number(formData.requirements.maxSpace)
+        : null,
+
+      price: {
+        minUSD: formData.requirements.price.minUSD
+          ? Number(formData.requirements.price.minUSD)
+          : null,
+
+        maxUSD: formData.requirements.price.maxUSD
+          ? Number(formData.requirements.price.maxUSD)
+          : null,
+
+        minSYP: formData.requirements.price.minSYP
+          ? Number(formData.requirements.price.minSYP)
+          : null,
+
+        maxSYP: formData.requirements.price.maxSYP
+          ? Number(formData.requirements.price.maxSYP)
+          : null,
+      },
+    },
   };
+
+  console.log("Request Payload:", payload);
+
+  try {
+    await createRequest(payload).unwrap();
+
+    toast.success("Request created successfully");
+
+    setTimeout(() => {
+      navigation("/Requests");
+    }, 0);
+  } catch (err) {
+    console.error(err);
+
+    toast.error(
+      err?.data?.message || "Failed to create request"
+    );
+  }
+};
 
   return {
     formData,

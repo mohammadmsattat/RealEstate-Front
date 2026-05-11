@@ -14,8 +14,8 @@ export function useAddOffer() {
     title: "",
     code: "",
     description: "",
-    processType: "sale",
-    estateType: "house",
+    processType: "",
+    estateType: "",
     city: "",
     neighborhood: "",
     address: "",
@@ -24,7 +24,7 @@ export function useAddOffer() {
     totalSpace: "",
     builtArea: "",
     landArea: "",
-    bedrooms: "", // UI فقط
+    bedrooms: "",
     bathrooms: "",
     floorNumber: "",
     totalFloors: "",
@@ -39,8 +39,8 @@ export function useAddOffer() {
     pricePerMeterFrom: "",
     pricePerMeterTo: "",
 
-    currency: "USD",
-    paymentType: "cash",
+    currency: "",
+    paymentType: "",
     downPayment: "",
     installmentMonths: "",
 
@@ -61,7 +61,7 @@ export function useAddOffer() {
       lng: "",
     },
 
-    areaUnit: "sqm",
+    areaUnit: "",
 
     isNegotiable: false,
     shortDescription: "",
@@ -114,12 +114,41 @@ export function useAddOffer() {
   });
 
   const [errors, setErrors] = useState({});
-  const [createOffer, { isLoading ,isSuccess }] = useCreateOfferMutation();
-  // 🔹 handle change
-  const handleChange = (field) => (e) => {
-    const value = e.target.value;
+  const [createOffer, { isLoading, isSuccess }] = useCreateOfferMutation();
 
-    // لو الحقل nested مثل price.minSYP
+  const numberFields = [
+    "totalSpace",
+    "builtArea",
+    "landArea",
+    "bathrooms",
+    "floorNumber",
+    "totalFloors",
+    "yearBuilt",
+    "downPayment",
+    "installmentMonths",
+    "pricePerMeterFrom",
+    "pricePerMeterTo",
+  ];
+
+  const handleChange = (field) => (e) => {
+    let value = e.target.value;
+    console.log(field, e.target?.value, e);
+    if (numberFields.includes(field)) {
+      if (value === "") {
+        value = "";
+      } else {
+        value = Number(value);
+
+        if (value < 0) value = 0;
+      }
+    }
+
+    // حذف الخطأ مباشرة عند التعديل
+    setErrors((prev) => ({
+      ...prev,
+      [field]: "",
+    }));
+
     if (field.includes(".")) {
       const [parent, child] = field.split(".");
 
@@ -127,7 +156,7 @@ export function useAddOffer() {
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value === "" ? "" : Number(value),
+          [child]: value,
         },
       }));
     } else {
@@ -154,11 +183,11 @@ export function useAddOffer() {
     return {
       ...formData,
 
-      // ✅ إصلاح rooms
+      //  إصلاح rooms
       rooms: Number(formData.bedrooms) || 0,
       offerNumber: formData.offerNumber || undefined,
       staffParcode: formData.staffParcode || undefined,
-      // ✅ تحويل الأرقام
+      //  تحويل الأرقام
       totalSpace: Number(formData.totalSpace) || 0,
       builtArea: Number(formData.builtArea) || 0,
       landArea: Number(formData.landArea) || 0,
@@ -182,7 +211,7 @@ export function useAddOffer() {
         ? Number(formData.pricePerMeterTo)
         : null,
 
-      // ✅ price object
+      //  price object
       price: {
         minSYP: Number(formData.price.minSYP) || 0,
         maxSYP: Number(formData.price.maxSYP) || 0,
@@ -190,18 +219,77 @@ export function useAddOffer() {
         maxUSD: Number(formData.price.maxUSD) || 0,
       },
 
-      // ✅ features
+      //  features
       // features: features,
 
-      // ❌ حذف UI فقط
+      // حذف UI فقط
       bedrooms: undefined,
     };
   };
 
-  const handleSubmit = async () => {
-    const payload = buildPayload();
-    console.log(payload);
+  const validateRequiredFields = () => {
+    const newErrors = {};
 
+    const requiredFields = [
+      {
+        key: "city",
+        value: formData.city,
+        label: t("validation.fields.city"),
+      },
+
+      {
+        key: "processType",
+        value: formData.processType,
+        label: t("validation.fields.operationType"),
+      },
+      {
+        key: "estateType",
+        value: formData.estateType,
+        label: t("validation.fields.estateType"),
+      },
+
+      {
+        key: "code",
+        value: formData.code,
+        label: t("validation.fields.code"),
+      },
+
+      {
+        key: "map",
+        value: formData.location.lat && formData.location.lng,
+        label: t("validation.fields.map"),
+      },
+    ];
+
+    for (const field of requiredFields) {
+      const isEmpty =
+        field.value === undefined || field.value === null || field.value === "";
+
+      if (isEmpty) {
+        newErrors[field.key] = t("validation.required", {
+          field: field.label,
+        });
+      }
+    }
+
+    setErrors(newErrors);
+
+    // أول خطأ فقط toast
+    const firstError = Object.values(newErrors)[0];
+
+    if (firstError) {
+      toast.error(firstError);
+      return false;
+    }
+
+    return true;
+  };
+  console.log(formData.propertyType);
+
+  const handleSubmit = async () => {
+    if (!validateRequiredFields()) return;
+    console.log("Payload before transformation:", buildPayload());
+    const payload = buildPayload();
     const form = new FormData();
 
     Object.keys(payload).forEach((key) => {
@@ -244,7 +332,6 @@ export function useAddOffer() {
     try {
       await createOffer(form).unwrap();
       toast.success("Offer added successfully");
-
       setTimeout(() => {
         navigation("/offers");
       }, 1200);

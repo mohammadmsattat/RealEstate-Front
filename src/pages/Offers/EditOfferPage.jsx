@@ -10,8 +10,10 @@ export default function EditOfferPage() {
     formData,
     features,
     files,
+    errors,
+
     isLoading,
-     isSuccess,
+    isSuccess,
     isUpdating,
     handleChange,
     handleFeature,
@@ -52,6 +54,7 @@ export default function EditOfferPage() {
           formData={formData}
           features={features}
           files={files}
+          errors={errors}
           handleChange={handleChange}
           handleFeature={handleFeature}
           setFiles={setFiles}

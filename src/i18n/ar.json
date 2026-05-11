@@ -188,6 +188,17 @@
       "parcelNumber": "أدخل رقم القسيمة"
     }
   },
+  "validation": {
+    "required": "حقل {{field}} مطلوب",
+
+    "fields": {
+      "map": "الموقع على الخريطة",
+      "city": "المدينة",
+      "operationType": "نوع العملية",
+      "estateType": "نوع العقار",
+      "code": "كود العقار"
+    }
+  },
   "offerDetails": {
     "description": "الوصف",
     "details": "تفاصيل العقار",
@@ -221,8 +232,8 @@
     "keyword": "كلمة البحث",
     "processType": "نوع العملية",
     "estateType": "نوع العقار",
-    "minPrice": "أقل سعر",
-    "maxPrice": "أعلى سعر",
+    "minPrice": "أقل سعر (USD)",
+    "maxPrice": "أعلى سعر (USD)",
     "reset": "إعادة تعيين",
     "applyFilters": "تطبيق الفلاتر",
     "select": {
@@ -235,5 +246,107 @@
     "Enterkeyword": "ابحث هنا ...",
     "Placeholdercity": "ادخل مدينة",
     "Placeholderbedrooms": " ادخل عدد الغرف"
+  },
+  "requestsPage": {
+    "editTitle": "تعديل الطلب",
+    "update": "تحديث الطلب",
+    "title": "جدول الطلبات",
+    "addRequest": "إضافة طلب",
+    "requestNumber": "رقم الطلب",
+    "propertyType": "نوع العقار",
+    "operationType": "نوع العملية",
+    "city": "المدينة",
+    "actionsTitle": "العمليات",
+    "deleteSelected": "حذف المحدد",
+    "matchOffersTitle": "العروض المطابقة",
+    "results": "النتائج",
+    "request": "الطلب",
+    "code": "الكود",
+    "type": "النوع",
+    "priceUSD": "السعر (دولار)",
+    "rooms": "الغرف",
+    "space": "المساحة",
+    "status": "الحالة",
+    "noMatches": "لا توجد عروض مطابقة",
+    "multiple": "عناصر متعددة",
+    "customerSection": "معلومات العميل",
+    "requirementsSection": "متطلبات العقار",
+    "financial": "الميزانية",
+    "metadata": "البيانات",
+    "createdAt": "تاريخ الإنشاء",
+    "lastModified": "آخر تعديل",
+    "contacts": "عدد الاتصالات",
+    "actions": {
+      "view": "عرض",
+      "edit": "تعديل",
+      "Offers": "مطابقة العروض"
+    },
+
+    "pagination": {
+      "page": "صفحة"
+    },
+
+    "errors": {
+      "load": "فشل تحميل الطلبات"
+    },
+    "tabs": {
+      "basic": "المعلومات الأساسية",
+      "location": "الموقع",
+      "details": "التفاصيل",
+      "financial": "الميزانية",
+      "contact": "العميل"
+    },
+
+    "neighborhood": "الحي",
+
+    "minRooms": "أقل عدد غرف",
+    "maxRooms": "أعلى عدد غرف",
+    "minSpace": "أقل مساحة",
+    "maxSpace": "أكبر مساحة",
+
+    "minPriceUSD": "أقل سعر (دولار)",
+    "maxPriceUSD": "أعلى سعر (دولار)",
+    "minPriceSYP": "أقل سعر (ليرة سورية)",
+    "maxPriceSYP": "أعلى سعر (ليرة سورية)",
+
+    "customerName": "اسم العميل",
+    "phone": "رقم الهاتف",
+    "email": "البريد الإلكتروني",
+
+    "addRequestTitle": "إضافة طلب",
+    "save": "حفظ الطلب",
+
+    "select": {
+      "sale": "بيع",
+      "rent": "إيجار",
+      "apartment": "شقة",
+      "villa": "فيلا",
+      "house": "منزل"
+    },
+    "placeholders": {
+      "requestNumber": "أدخل رقم الطلب",
+
+      "processType": "اختر نوع العملية",
+      "estateType": "اختر نوع العقار",
+
+      "city": "أدخل المدينة",
+      "neighborhood": "أدخل الحي",
+
+      "minRooms": "أقل عدد غرف",
+      "maxRooms": "أكبر عدد غرف",
+
+      "minSpace": "أقل مساحة",
+      "maxSpace": "أكبر مساحة",
+
+      "minPriceUSD": "أقل سعر بالدولار",
+      "maxPriceUSD": "أعلى سعر بالدولار",
+
+      "minPriceSYP": "أقل سعر بالليرة السورية",
+      "maxPriceSYP": "أعلى سعر بالليرة السورية",
+
+      "customerName": "أدخل اسم العميل",
+      "phone": "أدخل رقم الهاتف",
+      "email": "أدخل البريد الإلكتروني"
+    }
   }
 }

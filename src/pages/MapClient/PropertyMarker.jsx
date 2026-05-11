@@ -24,13 +24,13 @@ console.log(offer.location);
   return (
     <Marker position={[lat, lng]} eventHandlers={{ click: handleClick }}>
       {/* Tooltip لعرض السعر فوق Marker */}
-      {offer.price && (
+      {/* {offer.price && (
         <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
           <span className="bg-white px-2 py-1 rounded shadow text-sm font-bold">
             {offer.price} {offer.currency}
           </span>
         </Tooltip>
-      )}
+      )} */}
     </Marker>
   );
 };

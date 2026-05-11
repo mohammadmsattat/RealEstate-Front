@@ -3,14 +3,17 @@ import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import RequestsForm from "./RequestsForm";
 import { useAddRequest } from "@/hooks/Requests/useAddRequest";
+import { useTranslation } from "react-i18next";
 
 export default function AddRequestPage() {
+  const { t } = useTranslation();
+
   const {
     formData,
     handleChange,
     handleSubmit,
     isLoading,
-
+    errors,
     isMapOpen,
     openMapModal,
     closeMapModal,
@@ -19,10 +22,10 @@ export default function AddRequestPage() {
   return (
     <div className="grid grid-cols-1">
       <Card
-        title="Add Request"
+        title={t("requestsPage.addRequestTitle")}
         headerSlot={
           <Button
-            text="Save Request"
+            text={t("requestsPage.save")}
             className="btn-dark w-full"
             onClick={handleSubmit}
             disabled={isLoading}
@@ -31,11 +34,13 @@ export default function AddRequestPage() {
         }
       >
         <RequestsForm
+          t={t}
           formData={formData}
           handleChange={handleChange}
           isMapOpen={isMapOpen}
           onOpenMap={openMapModal}
           onCloseMap={closeMapModal}
+          errors={errors}
         />
       </Card>
     </div>

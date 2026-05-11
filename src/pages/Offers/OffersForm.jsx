@@ -106,6 +106,7 @@ export default function OfferForm({
         <LocationTab
           t={t}
           formData={formData}
+          errors={errors}
           setLatLng={setLatLng}
           isMapOpen={isMapOpen}
           onOpenMap={onOpenMap}
@@ -115,7 +116,7 @@ export default function OfferForm({
 
         <DetailsTab t={t} formData={formData} handleChange={handleChange} />
 
-        <FinancialTab t={t} formData={formData} handleChange={handleChange}  />
+        <FinancialTab t={t} formData={formData} handleChange={handleChange} />
 
         <ContactTab t={t} formData={formData} handleChange={handleChange} />
 

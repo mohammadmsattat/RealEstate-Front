@@ -6,6 +6,7 @@ import Icon from "@/components/ui/Icon";
 
 export default function LocationTab({
   formData,
+  errors,
   handleChange,
   isMapOpen,
   onOpenMap,
@@ -22,6 +23,7 @@ export default function LocationTab({
             placeholder={t("addOfferPage.placeholders.city")}
             value={formData.city}
             onChange={handleChange("city")}
+            error={errors.city}
           />
           <Textinput
             label={t("addOfferPage.area")}
@@ -56,11 +58,16 @@ export default function LocationTab({
         <button
           type="button"
           onClick={onOpenMap}
-          className="btn-dark flex items-center gap-2 px-4 py-2  rounded-lg  transition"
+          className={`btn-dark flex items-center gap-2 px-4 py-2 rounded-lg transition
+${errors.map ? "border-2 border-red-500" : ""}
+`}
         >
           <Icon icon="heroicons-outline:map" />
           {t("addOfferPage.openMap") || "Open Map to Select Location"}
         </button>
+        {errors.map && (
+          <p className="text-red-500 text-sm mt-1">{errors.map}</p>
+        )}
       </div>
 
       {/* ✅ استخدم onCloseMap هنا */}

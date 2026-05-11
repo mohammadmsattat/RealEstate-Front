@@ -20,7 +20,6 @@ const MapPage1 = () => {
     return () => socketService.disconnect();
   }, []);
 console.log(offers);
-console.log(offers);
 
   return (
     <div className="flex w-full h-screen">

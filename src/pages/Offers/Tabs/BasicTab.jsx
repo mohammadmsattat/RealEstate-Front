@@ -3,7 +3,7 @@ import Textinput from "@/components/ui/Textinput";
 import Textarea from "@/components/ui/Textarea";
 import Select from "@/components/ui/Select";
 
-export default function BasicTab({ formData, handleChange, t }) {
+export default function BasicTab({ formData, errors, handleChange, t }) {
   return (
     <TabPanel>
       <div className="grid md:grid-cols-2 gap-4">
@@ -33,6 +33,7 @@ export default function BasicTab({ formData, handleChange, t }) {
           placeholder={t("addOfferPage.placeholders.code")}
           value={formData.code}
           onChange={handleChange("code")}
+          error={errors.code}
         />
 
         <Select
@@ -43,6 +44,7 @@ export default function BasicTab({ formData, handleChange, t }) {
             value: op,
           }))}
           onChange={handleChange("processType")}
+          error={errors.processType}
         />
 
         <Select
@@ -55,6 +57,7 @@ export default function BasicTab({ formData, handleChange, t }) {
             }),
           )}
           onChange={handleChange("estateType")}
+          error={errors.estateType}
         />
       </div>
 

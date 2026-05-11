@@ -19,14 +19,13 @@ const MatchOffers = () => {
       <div className="flex-1">
         <Card
           className="relative"
-          title="Matching Offers"
+          title={t("requestsPage.matchOffersTitle")}
           subtitle={
             request
-              ? `Request: ${request.requestNumber} | Results: ${totalMatches}`
-              : `Results: ${totalMatches}`
+              ? `${t("requestsPage.request")} ${request.requestNumber} | ${t("requestsPage.results")}: ${totalMatches}`
+              : `${t("requestsPage.results")}: ${totalMatches}`
           }
         >
-          {/* LOADING */}
           {(isLoading || isFetching) && (
             <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-10 rounded-xl">
               <div className="flex flex-col items-center gap-3">
@@ -41,14 +40,14 @@ const MatchOffers = () => {
           <table className="min-w-full divide-y">
             <thead>
               <tr>
-                <th className="table-th">Code</th>
-                <th className="table-th">Type</th>
-                <th className="table-th">City</th>
-                <th className="table-th">Neighborhood</th>
-                <th className="table-th">Price (USD)</th>
-                <th className="table-th">Rooms</th>
-                <th className="table-th">Space</th>
-                <th className="table-th">Status</th>
+                <th className="table-th">{t("requestsPage.code")}</th>
+                <th className="table-th">{t("requestsPage.type")}</th>
+                <th className="table-th">{t("requestsPage.city")}</th>
+                <th className="table-th">{t("requestsPage.neighborhood")}</th>
+                <th className="table-th">{t("requestsPage.priceUSD")}</th>
+                <th className="table-th">{t("requestsPage.rooms")}</th>
+                <th className="table-th">{t("requestsPage.space")}</th>
+                <th className="table-th">{t("requestsPage.status")}</th>
               </tr>
             </thead>
 
@@ -98,7 +97,7 @@ const MatchOffers = () => {
               ) : (
                 <tr>
                   <td colSpan={8} className="text-center py-6 text-slate-500">
-                    No matching offers found
+                    {t("requestsPage.noMatches")}
                   </td>
                 </tr>
               )}

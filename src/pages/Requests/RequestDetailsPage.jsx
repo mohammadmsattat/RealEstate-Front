@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import { useGetRequestByIdQuery } from "@/store/api/Requests/RequestApi";
+import { useTranslation } from "react-i18next";
 
 const InfoItem = ({ icon, label, value }) => (
   <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
@@ -19,8 +20,9 @@ const InfoItem = ({ icon, label, value }) => (
 );
 
 const RequestDetailsPage = () => {
-  const { id } = useParams();
+  const { t } = useTranslation();
 
+  const { id } = useParams();
   const { data, isLoading } = useGetRequestByIdQuery(id);
 
   if (isLoading)
@@ -31,22 +33,20 @@ const RequestDetailsPage = () => {
     );
 
   const request = data?.data;
-  if (!request) return <div className="p-6">No Data</div>;
+  if (!request) return <div className="p-6">{t("common.noData")}</div>;
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
-
       {/* HEADER */}
       <div className="bg-white p-6 rounded-2xl shadow flex flex-col md:flex-row justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Request #{request.requestNumber}
+            {t("requestsPage.requestNumber")} :{request.requestNumber}
           </h1>
 
           <div className="flex items-center gap-2 text-gray-500 mt-2">
             <Icon icon="heroicons-outline:location-marker" />
-            {request.requirements?.city} -{" "}
-            {request.requirements?.neighborhood}
+            {request.requirements?.city} - {request.requirements?.neighborhood}
           </div>
         </div>
 
@@ -56,52 +56,56 @@ const RequestDetailsPage = () => {
       </div>
 
       {/* CUSTOMER */}
-      <Card title="Customer Information">
+      <Card title={t("requestsPage.customerSection") || "Customer Information"}>
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:user"
-            label="Name"
+            label={t("requestsPage.customerName")}
             value={request.customer?.name}
           />
           <InfoItem
             icon="heroicons-outline:phone"
-            label="Phone"
+            label={t("requestsPage.phone")}
             value={request.customer?.phone}
           />
           <InfoItem
             icon="heroicons-outline:mail"
-            label="Email"
+            label={t("requestsPage.email")}
             value={request.customer?.email}
           />
         </div>
       </Card>
 
       {/* REQUIREMENTS */}
-      <Card title="Property Requirements">
+      <Card
+        title={t("requestsPage.requirementsSection") || "Property Requirements"}
+      >
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:home"
-            label="Type"
+            label={t("requestsPage.propertyType")}
             value={request.requirements?.estateTypes?.join(", ")}
           />
           <InfoItem
             icon="heroicons-outline:switch-horizontal"
-            label="Operation"
+            label={t("requestsPage.operationType")}
             value={request.requirements?.processType}
           />
           <InfoItem
             icon="heroicons-outline:map"
-            label="City"
+            label={t("requestsPage.city")}
             value={request.requirements?.city}
           />
           <InfoItem
             icon="heroicons-outline:location-marker"
-            label="Neighborhood"
+            label={t("requestsPage.neighborhood")}
             value={request.requirements?.neighborhood}
           />
           <InfoItem
             icon="heroicons-outline:layers"
-            label="Rooms"
+            label={
+              t("requestsPage.minRooms") + " - " + t("requestsPage.maxRooms")
+            }
             value={
               request.requirements?.minRooms || request.requirements?.maxRooms
                 ? `${request.requirements?.minRooms || 0} - ${
@@ -112,7 +116,9 @@ const RequestDetailsPage = () => {
           />
           <InfoItem
             icon="heroicons-outline:arrows-expand"
-            label="Space"
+            label={
+              t("requestsPage.minSpace") + " - " + t("requestsPage.maxSpace")
+            }
             value={
               request.requirements?.minSpace || request.requirements?.maxSpace
                 ? `${request.requirements?.minSpace || 0} - ${
@@ -125,7 +131,7 @@ const RequestDetailsPage = () => {
       </Card>
 
       {/* BUDGET */}
-      <Card title="Budget">
+      <Card title={t("requestsPage.financial") || "Budget"}>
         <div className="grid md:grid-cols-2 gap-3">
           <InfoItem
             icon="heroicons-outline:currency-dollar"
@@ -154,38 +160,17 @@ const RequestDetailsPage = () => {
         </div>
       </Card>
 
-      {/* EXTRA */}
-      <Card title="Additional Details">
-        <div className="grid md:grid-cols-3 gap-3">
-          <InfoItem
-            icon="heroicons-outline:credit-card"
-            label="Payment"
-            value={request.requirements?.paymentType}
-          />
-          <InfoItem
-            icon="heroicons-outline:home"
-            label="Condition"
-            value={request.requirements?.propertyCondition}
-          />
-          <InfoItem
-            icon="heroicons-outline:office-building"
-            label="Furnishing"
-            value={request.requirements?.furnishingType}
-          />
-        </div>
-      </Card>
-
       {/* META */}
-      <Card title="Metadata">
+      <Card title={t("requestsPage.metadata") || "Metadata"}>
         <div className="grid md:grid-cols-3 gap-3">
           <InfoItem
             icon="heroicons-outline:calendar"
-            label="Created At"
+            label={t("requestsPage.createdAt")}
             value={new Date(request.createdAt).toLocaleDateString()}
           />
           <InfoItem
             icon="heroicons-outline:refresh"
-            label="Last Modified"
+            label={t("requestsPage.lastModified")}
             value={
               request.lastmodifiedDate
                 ? new Date(request.lastmodifiedDate).toLocaleDateString()
@@ -194,7 +179,7 @@ const RequestDetailsPage = () => {
           />
           <InfoItem
             icon="heroicons-outline:chart-bar"
-            label="Contacts"
+            label={t("requestsPage.contacts") || "Contacts"}
             value={request.stats?.timesContacted}
           />
         </div>

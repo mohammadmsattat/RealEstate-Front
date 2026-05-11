@@ -45,7 +45,7 @@ const OffersControlPage = () => {
 
   const normalizedFilters = normalizeFilters(appliedFilters);
 
-  const { data, isLoading, isFetching } = useGetOffersQuery(normalizedFilters, {
+  const { data, isLoading, isFetching  } = useGetOffersQuery(normalizedFilters, {
     skip: !Object.keys(appliedFilters).length,
     refetchOnMountOrArgChange: true,
   });
@@ -107,7 +107,7 @@ const OffersControlPage = () => {
             </div>
           }
         >
-          {/* ✅ LOADING OVERLAY */}
+          {/*  LOADING OVERLAY */}
           {(isLoading || isFetching) && (
             <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-10 rounded-xl">
               <div className="flex flex-col items-center gap-3">
@@ -142,7 +142,7 @@ const OffersControlPage = () => {
                   >
                     <td className="table-td">{offer.code}</td>
                     <td className="table-td">{offer.estateType}</td>
-                    <td className="table-td">{offer.price}</td>
+                    <td className="table-td">{`${offer.price.minUSD} - ${offer.price.maxUSD}`} $</td>
                     <td className="table-td">{offer.city}</td>
                     <td className="table-td">{offer.bedrooms}</td>
                     <td className="table-td">{offer.totalSpace}</td>

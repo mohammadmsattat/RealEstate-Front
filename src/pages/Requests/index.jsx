@@ -79,13 +79,9 @@ const RequestsPage = () => {
     return data.data.map((req) => ({
       _id: req._id,
       requestNumber: req.requestNumber,
-      customerName: req.customer?.name,
-      phone: req.customer?.phone,
       estateType: req.requirements?.estateTypes?.[0],
       processType: req.requirements?.processType,
       city: req.requirements?.city,
-      minPrice: req.requirements?.price?.minUSD,
-      maxPrice: req.requirements?.price?.maxUSD,
     }));
   }, [data]);
 
@@ -103,21 +99,14 @@ const RequestsPage = () => {
         ),
       },
 
-      { Header: "Request Number", accessor: "requestNumber" },
-      { Header: "Customer Name", accessor: "customerName" },
-      { Header: "Phone", accessor: "phone" },
-      { Header: "Property Type", accessor: "estateType" },
-      { Header: "Operation Type", accessor: "processType" },
-      { Header: "City", accessor: "city" },
+      { Header: t("requestsPage.requestNumber"), accessor: "requestNumber" },
+
+      { Header: t("requestsPage.propertyType"), accessor: "estateType" },
+      { Header: t("requestsPage.operationType"), accessor: "processType" },
+      { Header: t("requestsPage.city"), accessor: "city" },
 
       {
-        Header: "Price",
-        Cell: ({ row }) =>
-          `${row.original.minPrice || 0} - ${row.original.maxPrice || 0} USD`,
-      },
-
-      {
-        Header: "Actions",
+        Header: t("requestsPage.actionsTitle"),
         Cell: ({ row }) => {
           const request = row.original;
 
@@ -140,7 +129,7 @@ const RequestsPage = () => {
                     }}
                   >
                     <Icon icon={item.icon} />
-                    <span>{item.name}</span>
+                    <span>{t(`requestsPage.actions.${item.name}`)}</span>
                   </div>
                 </MenuItem>
               ))}
@@ -149,7 +138,7 @@ const RequestsPage = () => {
         },
       },
     ],
-    [selectedRows, navigate],
+    [selectedRows, navigate, t],
   );
 
   const tableInstance = useTable(
@@ -182,12 +171,12 @@ const RequestsPage = () => {
       </Card>
     );
 
-  if (error) return <div>Error loading requests</div>;
+  if (error) return <div>{t("requestsPage.errors.load")}</div>;
 
   return (
     <Card noBorder>
       <div className="md:flex justify-between items-center mb-6">
-        <h4 className="card-title">Requests</h4>
+        <h4 className="card-title">{t("requestsPage.title")}</h4>
 
         <div className="flex space-x-3 items-center">
           <GlobalFilter
@@ -197,7 +186,7 @@ const RequestsPage = () => {
           />
 
           <Button
-            text="Add Request"
+            text={t("requestsPage.addRequest")}
             icon="heroicons-outline:plus"
             className="btn-dark"
             onClick={() => navigate("/requests/add")}
@@ -205,7 +194,7 @@ const RequestsPage = () => {
 
           {selectedRows.length > 0 && (
             <Button
-              text="Delete Selected"
+              text={t("requestsPage.deleteSelected")}
               icon="heroicons-outline:trash"
               className="btn-danger"
               onClick={() => {
@@ -250,7 +239,8 @@ const RequestsPage = () => {
 
       <div className="flex justify-between mt-6 items-center">
         <span>
-          Page {pageIndex + 1} of {pageOptions.length}
+          {t("requestsPage.pagination.page")} {pageIndex + 1} of{" "}
+          {pageOptions.length}
         </span>
 
         <div className="flex space-x-3">
@@ -276,7 +266,7 @@ const RequestsPage = () => {
         errorMessage={deleteError?.data?.message}
         itemName={
           selectedRows.length > 0
-            ? "Multiple Requests"
+            ? t("requestsPage.multiple")
             : selectedRequest?.requestNumber
         }
       />

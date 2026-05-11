@@ -17,7 +17,6 @@ export default function DetailsTab({ formData, handleChange, t }) {
   return (
     <TabPanel>
       <div className="grid md:grid-cols-2 gap-4">
-
         <Textinput
           label={t("addOfferPage.facade")}
           placeholder={t("addOfferPage.placeholders.facade")}
@@ -148,8 +147,9 @@ export default function DetailsTab({ formData, handleChange, t }) {
           placeholder={t("addOfferPage.placeholders.totalFloors")}
           value={formData.totalFloors}
           onChange={handleChange("totalFloors")}
+          min={0}
+          max={100}
         />
-
       </div>
     </TabPanel>
   );

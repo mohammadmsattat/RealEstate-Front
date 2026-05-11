@@ -189,6 +189,17 @@
       "parcelNumber": "Enter parcel number"
     }
   },
+  "validation": {
+    "required": "{{field}} is required",
+
+    "fields": {
+      "map": "Map Location",
+      "city": "City",
+      "operationType": "Operation Type",
+      "estateType": "Estate Type",
+      "code": "Property Code"
+    }
+  },
   "mapModal": {
     "title": "Select Location on Map",
     "cancel": "Cancel",
@@ -216,14 +227,14 @@
     "type": "Type",
     "price": "Price",
     "city": "City",
-    "bedrooms": "Bedrooms",
+    "bedrooms": "Rooms",
     "space": "Space",
     "noData": "No data available",
     "keyword": "Keyword",
     "processType": "Process Type",
     "estateType": "Estate Type",
-    "minPrice": "Min Price",
-    "maxPrice": "Max Price",
+    "minPrice": "Min Price (USD)",
+    "maxPrice": "Max Price (USD)",
     "reset": "Reset",
     "applyFilters": "Apply Filters",
     "select": {
@@ -236,5 +247,108 @@
     "Enterkeyword": "Enter keyword",
     "Placeholdercity": "Enter City",
     "Placeholderbedrooms": " Enter Rooms"
+  },
+
+  "requestsPage": {
+    "editTitle": "Edit Request",
+    "update": "Update Request",
+    "title": "Requests Table",
+    "addRequest": "Add Request",
+    "requestNumber": "Request Number",
+    "propertyType": "Property Type",
+    "operationType": "Operation Type",
+    "city": "City",
+    "actionsTitle": "Actions",
+    "deleteSelected": "Delete Selected",
+    "multiple": "Multiple Items",
+    "customerSection": "Customer Information",
+    "requirementsSection": "Property Requirements",
+    "financial": "Budget",
+    "metadata": "Metadata",
+    "createdAt": "Created At",
+    "lastModified": "Last Modified",
+    "contacts": "Contacts",
+    "matchOffersTitle": "Matching Offers",
+    "results": "Results",
+    "request": "Request",
+    "code": "Code",
+    "type": "Type",
+    "priceUSD": "Price (USD)",
+    "rooms": "Rooms",
+    "space": "Space",
+    "status": "Status",
+    "noMatches": "No matching offers found",
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "Offers": "Match Offers"
+    },
+
+    "pagination": {
+      "page": "Page"
+    },
+
+    "errors": {
+      "load": "Error loading requests"
+    },
+    "tabs": {
+      "basic": "Basic Info",
+      "location": "Location",
+      "details": "Details",
+      "financial": "Budget",
+      "contact": "Customer"
+    },
+
+    "neighborhood": "Neighborhood",
+
+    "minRooms": "Min Rooms",
+    "maxRooms": "Max Rooms",
+    "minSpace": "Min Space",
+    "maxSpace": "Max Space",
+
+    "minPriceUSD": "Min Price (USD)",
+    "maxPriceUSD": "Max Price (USD)",
+    "minPriceSYP": "Min Price (SYP)",
+    "maxPriceSYP": "Max Price (SYP)",
+
+    "customerName": "Customer Name",
+    "phone": "Phone",
+    "email": "Email",
+
+    "addRequestTitle": "Add Request",
+    "save": "Save Request",
+
+    "select": {
+      "sale": "Sale",
+      "rent": "Rent",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "house": "House"
+    },
+    "placeholders": {
+      "requestNumber": "Enter request number",
+
+      "processType": "Select process type",
+      "estateType": "Select property type",
+
+      "city": "Enter city",
+      "neighborhood": "Enter neighborhood",
+
+      "minRooms": "Min rooms",
+      "maxRooms": "Max rooms",
+
+      "minSpace": "Min space",
+      "maxSpace": "Max space",
+
+      "minPriceUSD": "Min price (USD)",
+      "maxPriceUSD": "Max price (USD)",
+
+      "minPriceSYP": "Min price (SYP)",
+      "maxPriceSYP": "Max price (SYP)",
+
+      "customerName": "Enter customer name",
+      "phone": "Enter phone number",
+      "email": "Enter email"
+    }
   }
 }

@@ -24,6 +24,8 @@ export const useEditRequest = () => {
   const [updateRequest, { isLoading: isUpdating }] = useUpdateRequestMutation();
 
   const [formData, setFormData] = useState({
+    requestNumber: "",
+
     customer: {
       name: "",
       email: "",
@@ -47,12 +49,15 @@ export const useEditRequest = () => {
     },
   });
 
+  const [errors, setErrors] = useState({});
+
   // 🧠 fill form (مرة وحدة فقط)
   useEffect(() => {
     if (data && !isInitialized) {
       const req = data.data || data;
 
       setFormData({
+        requestNumber: req.requestNumber || "",
         customer: {
           name: req.customer?.name || "",
           email: req.customer?.email || "",
@@ -102,8 +107,63 @@ export const useEditRequest = () => {
     });
   };
 
+  const validate = () => {
+    const newErrors = {};
+
+    const requiredFields = [
+      {
+        key: "requestNumber",
+        value: formData.requestNumber,
+        label: "Request Number",
+      },
+
+      {
+        key: "estateTypes",
+        value: formData.requirements.estateTypes?.length > 0,
+        label: "Property Type",
+      },
+
+      {
+        key: "processType",
+        value: formData.requirements.processType,
+        label: "Operation Type",
+      },
+
+      {
+        key: "city",
+        value: formData.requirements.city,
+        label: "City",
+      },
+    ];
+
+    for (const field of requiredFields) {
+      const isEmpty =
+        field.value === undefined ||
+        field.value === null ||
+        field.value === "" ||
+        field.value === false;
+
+      if (isEmpty) {
+        newErrors[field.key] = `${field.label} is required`;
+      }
+    }
+
+    setErrors(newErrors);
+
+    const firstError = Object.values(newErrors)[0];
+
+    if (firstError) {
+      toast.error(firstError);
+      return false;
+    }
+
+    return true;
+  };
+
   // submit update
   const handleSubmit = async () => {
+    if (!validate()) return;
+
     const payload = new FormData();
 
     Object.keys(formData.customer).forEach((key) => {
@@ -132,7 +192,7 @@ export const useEditRequest = () => {
       toast.success("Request updated successfully");
       setTimeout(() => {
         navigation("/Requests");
-      },  0);
+      }, 0);
     } catch (err) {
       console.error(err);
       toast.error("Update failed");
@@ -143,6 +203,7 @@ export const useEditRequest = () => {
     formData,
     handleChange,
     handleSubmit,
+    errors,
     isLoading: isUpdating || isFetching,
     isMapOpen,
     openMapModal,
